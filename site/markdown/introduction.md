@@ -6,15 +6,16 @@
 
 # Nate makes error recovery readable.
 
-<p class="product-lead">Nate is a small programming language for scripts, CLI tools, and learning. It combines Go-inspired readability with error recovery and structured tasks built into the language.</p>
+<p class="product-lead">Nate is a programming language designed to make code easier to read, write, and reason about. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
 <div class="product-actions"><a class="button-primary" href="getting-started/hello-world.html">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="guide/errors.html">See how recovery works <span aria-hidden="true">↗</span></a></div>
 <p class="access-note">Read the guides now. Installing the release candidate requires repository access.</p>
 </div>
 <div class="sample-workbench">
-<div class="workbench-head"><span class="file-mark" aria-hidden="true">N</span><span>recovery.nate</span><span class="workbench-label">NATE</span></div>
-<div class="example-tabs" role="tablist" aria-label="Error recovery examples">
-<button id="json-tab" role="tab" aria-controls="json-example" aria-selected="true" tabindex="0">JSON fallback</button>
-<button id="guard-tab" role="tab" aria-controls="guard-example" aria-selected="false" tabindex="-1">Guard recovery</button>
+<div class="workbench-head"><span class="file-mark" aria-hidden="true">N</span><span>examples.nate</span><span class="workbench-label">NATE</span></div>
+<div class="example-tabs" role="tablist" aria-label="Nate code examples">
+<button id="json-tab" role="tab" aria-controls="json-example" aria-selected="true" tabindex="0" data-guide="guide/errors.html" data-caption="Read the error recovery guide">JSON fallback</button>
+<button id="guard-tab" role="tab" aria-controls="guard-example" aria-selected="false" tabindex="-1" data-guide="guide/errors.html" data-caption="Read the error recovery guide">Guard recovery</button>
+<button id="tasks-tab" role="tab" aria-controls="tasks-example" aria-selected="false" tabindex="-1" aria-label="Structured tasks" data-guide="guide/concurrency.html" data-caption="Read the structured concurrency guide">Tasks</button>
 </div>
 <div id="json-example" role="tabpanel" aria-labelledby="json-tab" tabindex="0">
 
@@ -44,14 +45,32 @@ print("Still running")
 
 <div class="example-output"><span>OUTPUT</span><samp>Could not read that item<br>Still running</samp><span class="output-success">Recovered</span></div>
 </div>
-<a class="example-caption" href="guide/errors.html">Two recovery patterns. Both are complete, runnable Nate programs.<span aria-hidden="true">↗</span></a>
+<div id="tasks-example" role="tabpanel" aria-labelledby="tasks-tab" tabindex="0" hidden>
+
+```nate
+channel results
+func square(n) { send(results, n * n) }
+
+concurrent {
+    spawn square(3)
+    spawn square(4)
+}
+
+total = receive(results) + receive(results)
+print("Both tasks finished:", total)
+close_channel(results)
+```
+
+<div class="example-output"><span>OUTPUT</span><samp>Both tasks finished: 25</samp><span class="output-success">Joined</span></div>
+</div>
+<a class="example-caption" href="guide/errors.html"><span>Read the error recovery guide</span><span aria-hidden="true">↗</span></a>
 </div>
 </section>
 
 <div class="capability-strip" aria-label="Interpreter capabilities"><span>Runs on <strong>macOS &amp; Linux</strong></span><span>Test your code with <code>nate test</code></span><span><strong>12 modules</strong> in the standard library</span></div>
 
 <section class="purpose-section" aria-labelledby="why-nate-exists">
-<div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Make everyday programs easier to understand.</h2><p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on a small set of concepts, explicit recovery, and structured concurrency.</p><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
+<div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Make everyday programs easier to understand.</h2><p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on familiar syntax, explicit recovery, and structured concurrency.</p><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
 <dl class="purpose-details">
 <div><dt>A language you can learn in smaller steps</dt><dd>Familiar control flow and a compact set of core concepts aim to keep the learning curve manageable as your scripts grow.</dd></div>
 <div><dt>Recovery beside the operation that can fail</dt><dd>Use <code>or</code> for a local fallback. Use <code>guard</code> to handle a failure across a group of operations in one recovery block.</dd></div>

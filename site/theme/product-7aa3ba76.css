@@ -78,7 +78,7 @@ body[data-page="home"] .content main { max-width: 1184px; margin: 0 auto; }
 .workbench-head { display: flex; align-items: center; gap: 9px; padding: 15px 20px; color: #ccdad2; font: 11px var(--mono-font); border-bottom: 1px solid #304237; }
 .file-mark { background: #a7edbc; color: #173426; border-radius: 3px; font: 700 10px var(--font); width: 16px; height: 18px; text-align: center; line-height: 18px; }
 .workbench-label { margin-left: auto; color: #91ac9e; font-size: 9px; letter-spacing: 1px; }
-.example-tabs { display: flex; gap: 24px; padding: 0 20px; background: #192c24; border-bottom: 1px solid #304237; }
+.example-tabs { display: flex; gap: 16px; padding: 0 14px; background: #192c24; border-bottom: 1px solid #304237; }
 .example-tabs button { font: 12px var(--font); padding: 12px 0; min-height: 44px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: #a9bfb0; cursor: pointer; }
 .example-tabs button[aria-selected="true"] { color: #c3f5d2; border-bottom-color: #a7edbc; }
 .sample-workbench [role="tabpanel"] { min-height: 272px; }

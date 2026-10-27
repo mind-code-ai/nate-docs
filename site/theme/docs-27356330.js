@@ -82,6 +82,11 @@
         item.setAttribute('aria-selected', String(selected)); item.tabIndex = selected ? 0 : -1;
         document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
       });
+      const guide = main.querySelector('.example-caption');
+      if (guide && tab.dataset.guide) {
+        guide.href = new URL(tab.dataset.guide, root);
+        guide.querySelector('span').textContent = tab.dataset.caption;
+      }
     };
     tabs.forEach((tab, index) => {
       tab.onclick = () => selectTab(tab);

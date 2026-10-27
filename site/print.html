@@ -13,7 +13,7 @@
         <meta name="color-scheme" content="light dark">
         <meta name="nate-version" content="1.0.0-rc.1">
 
-        <meta name="description" content="Nate is a small programming language for scripts, CLI tools, and learning. Discover why it was created and how it approaches error recovery and structured tasks.">
+        <meta name="description" content="Nate is a programming language with Go-inspired readability, explicit error recovery, and structured concurrency. Learn with runnable examples.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -33,7 +33,7 @@
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/docs-88d4844a.css">
-        <link rel="stylesheet" href="theme/product-28464d1a.css">
+        <link rel="stylesheet" href="theme/product-7aa3ba76.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -41,7 +41,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-1192d3a7.js";
+            window.path_to_searchindex_js = "searchindex-6b9f9398.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-4ad7ce49.js"></script>
@@ -187,7 +187,7 @@
 <div class="hero-copy">
 <a class="release-pill" href="#nate-10-scope"><span class="status-dot" aria-hidden="true"></span>Meet Nate 1.0.0-rc.1<span aria-hidden="true">↗</span></a>
 <h1 id="nate-makes-error-recovery-readable"><a class="header" href="#nate-makes-error-recovery-readable">Nate makes error recovery readable.</a></h1>
-<p class="product-lead">Nate is a small programming language for scripts, CLI tools, and learning. It combines Go-inspired readability with error recovery and structured tasks built into the language.</p>
+<p class="product-lead">Nate is a programming language designed to make code easier to read, write, and reason about. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
 
 <div class="product-actions"><a class="button-primary" href="#hello-world">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="#errors-and-recovery">See how recovery works <span aria-hidden="true">↗</span></a></div>
 
@@ -196,11 +196,12 @@
 </div>
 
 <div class="sample-workbench">
-<div class="workbench-head"><span class="file-mark" aria-hidden="true">N</span><span>recovery.nate</span><span class="workbench-label">NATE</span></div>
+<div class="workbench-head"><span class="file-mark" aria-hidden="true">N</span><span>examples.nate</span><span class="workbench-label">NATE</span></div>
 
-<div class="example-tabs" role="tablist" aria-label="Error recovery examples">
-<button id="json-tab" role="tab" aria-controls="json-example" aria-selected="true" tabindex="0">JSON fallback</button>
-<button id="guard-tab" role="tab" aria-controls="guard-example" aria-selected="false" tabindex="-1">Guard recovery</button>
+<div class="example-tabs" role="tablist" aria-label="Nate code examples">
+<button id="json-tab" role="tab" aria-controls="json-example" aria-selected="true" tabindex="0" data-guide="guide/errors.html" data-caption="Read the error recovery guide">JSON fallback</button>
+<button id="guard-tab" role="tab" aria-controls="guard-example" aria-selected="false" tabindex="-1" data-guide="guide/errors.html" data-caption="Read the error recovery guide">Guard recovery</button>
+<button id="tasks-tab" role="tab" aria-controls="tasks-example" aria-selected="false" tabindex="-1" aria-label="Structured tasks" data-guide="guide/concurrency.html" data-caption="Read the structured concurrency guide">Tasks</button>
 </div>
 
 <div id="json-example" role="tabpanel" aria-labelledby="json-tab" tabindex="0">
@@ -229,7 +230,24 @@ print("Still running")
 
 </div>
 
-<a class="example-caption" href="#errors-and-recovery">Two recovery patterns. Both are complete, runnable Nate programs.<span aria-hidden="true">↗</span></a>
+<div id="tasks-example" role="tabpanel" aria-labelledby="tasks-tab" tabindex="0" hidden="">
+<pre><code class="language-nate">channel results
+func square(n) { send(results, n * n) }
+
+concurrent {
+    spawn square(3)
+    spawn square(4)
+}
+
+total = receive(results) + receive(results)
+print("Both tasks finished:", total)
+close_channel(results)
+</code></pre>
+<div class="example-output"><span>OUTPUT</span><samp>Both tasks finished: 25</samp><span class="output-success">Joined</span></div>
+
+</div>
+
+<a class="example-caption" href="#errors-and-recovery"><span>Read the error recovery guide</span><span aria-hidden="true">↗</span></a>
 </div>
 
 </section>
@@ -239,7 +257,7 @@ print("Still running")
 <div class="purpose-intro">
 <p class="section-kicker">WHY NATE EXISTS</p>
 <h2 id="why-nate-exists">Make everyday programs easier to understand.</h2>
-<p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on a small set of concepts, explicit recovery, and structured concurrency.</p>
+<p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on familiar syntax, explicit recovery, and structured concurrency.</p>
 <a href="#variables-and-constants">Explore the language guide <span aria-hidden="true">→</span></a></div>
 
 <dl class="purpose-details">
@@ -546,28 +564,92 @@ deliberately when they export the same names. Qualified <code>math.PI</code> is 
 <p>Package manager commands and remote package caches are preview. See
 <a href="#modules-1">the module contract</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="tasks-and-channels"><a class="header" href="#tasks-and-channels">Tasks and channels</a></h1>
-<p>Outside a concurrent block, spawn starts a task and waits for it. Inside a
-concurrent block, spawns are started together and every started thread is joined.
-Task errors propagate after joining and can be caught with guard/or.</p>
-<pre><code class="language-nate">channel results
-func worker(value) { send(results, value * 2) }
-concurrent {
-    spawn worker(10)
-    spawn worker(20)
+<h1 id="structured-concurrency"><a class="header" href="#structured-concurrency">Structured concurrency</a></h1>
+<p>Use a <code>concurrent</code> block to give related tasks a shared lifetime. Each <code>spawn</code>
+starts a function call. The block waits for every task it started before the
+next statement runs.</p>
+<h2 id="wait-for-related-tasks"><a class="header" href="#wait-for-related-tasks">Wait for related tasks</a></h2>
+<p>Save this as <code>tasks.nate</code> and run <code>nate run tasks.nate</code>:</p>
+<pre><code class="language-nate">func prepare(name) {
+    sleep(10)
+    print(name, "ready")
 }
-print(receive(results), receive(results))
+
+concurrent {
+    spawn prepare("Report")
+    spawn prepare("Summary")
+}
+
+print("Both tasks finished")
+</code></pre>
+<p>One possible output:</p>
+<pre><code class="language-text">Report ready
+Summary ready
+Both tasks finished
+</code></pre>
+<p>The first two lines can appear in either order. <code>Both tasks finished</code> always
+prints last because execution leaves the block only after both tasks finish.
+Only <code>spawn</code> statements belong inside <code>concurrent</code>; put setup and follow-up
+work before or after it.</p>
+<p>Outside a <code>concurrent</code> block, <code>spawn</code> starts a task and waits for it immediately.
+Use the block when you want several tasks to make progress together.</p>
+<h2 id="collect-results-with-channels"><a class="header" href="#collect-results-with-channels">Collect results with channels</a></h2>
+<p>Channels let tasks return values to the code coordinating them. Each worker
+enqueues its result. After both workers finish, the caller receives the values
+and adds them together:</p>
+<pre><code class="language-nate">channel results
+func square(n) { send(results, n * n) }
+
+concurrent {
+    spawn square(3)
+    spawn square(4)
+}
+
+total = receive(results) + receive(results)
+assert_eq(total, 25)
+print("Both tasks finished:", total)
 close_channel(results)
 </code></pre>
-<p>Channels are named FIFO queues. Send enqueues and returns; receive blocks until
-a value exists or a closed queue drains. <code>value, ok = receive(results)</code> distinguishes
-queued nil from the end of a closed queue. There is no fixed queue capacity.</p>
-<p>One interpreter lock serializes evaluation. Receive, sleep, await, and joining
-tasks yield the lock. Captured state is shared, not copied. Static analysis catches
-some visible shared writes but is not complete race detection. Use channels and
-avoid depending on scheduling order. A failing task does not cancel blocked siblings.</p>
+<p>This prints <code>Both tasks finished: 25</code>. The sum is the same regardless of which
+worker sends first. Use channels to exchange values rather than depending on
+task scheduling order or mutating a shared result variable.</p>
+<p><code>send</code> enqueues and returns; it does not wait for a receiver. <code>receive</code> waits
+until a value is available or the channel is closed and drained. Queued values
+remain available after closure. <code>value, ok = receive(results)</code> distinguishes a
+queued nil from the end of a closed channel. Channels have no fixed capacity.</p>
+<h2 id="recover-after-the-tasks-finish"><a class="header" href="#recover-after-the-tasks-finish">Recover after the tasks finish</a></h2>
+<p>A task failure is returned after every started task has been joined. Place a
+<code>guard</code> around the block to handle that failure:</p>
+<pre><code class="language-nate">channel completed
+func failed_job() { panic "Job failed" }
+func completed_job() { send(completed, "Other task finished") }
+
+guard {
+    concurrent {
+        spawn failed_job()
+        spawn completed_job()
+    }
+} on error message {
+    print("Handled task failure")
+}
+
+print(receive(completed))
+close_channel(completed)
+</code></pre>
+<p>This prints <code>Handled task failure</code> followed by <code>Other task finished</code>. A failed
+task does not automatically cancel a sibling. The handler runs after joining;
+a sibling blocked on a channel must still be given a way to finish.</p>
+<h2 id="execution-boundaries"><a class="header" href="#execution-boundaries">Execution boundaries</a></h2>
+<p>The interpreter serializes Nate evaluation with one lock. Blocking receive,
+sleep, await, and task joins yield that lock so other tasks can make progress.
+Structured concurrency does not promise parallel CPU execution.</p>
+<p>Captured state is shared, not copied. Static analysis catches some visible
+shared writes but is not complete race detection. Use channels and avoid
+depending on scheduling order. Task groups have no automatic timeout or
+cancellation; programs must arrange channel closure or other progress.</p>
 <p>Async/await, supervision, links, monitors, and shared wrappers remain preview.
-See <a href="#concurrency">the concurrency contract</a>.</p>
+See <a href="#concurrency">the concurrency contract</a> for
+the full interpreter semantics.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="standard-library"><a class="header" href="#standard-library">Standard library</a></h1>
 <p>These are the 1.0 interpreter modules.</p>
@@ -3388,7 +3470,7 @@ versions must agree. Repository visibility is unchanged by publication.</p>
         <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="theme/docs-2696ea5a.js"></script>
+        <script src="theme/docs-27356330.js"></script>
 
         <script>
         window.addEventListener('load', function() {

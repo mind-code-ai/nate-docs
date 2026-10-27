@@ -14,7 +14,7 @@ The interpreter contracts are authoritative. VM/AOT, async, agents, and other pr
 - [Control flow](https://mind-code-ai.github.io/nate-docs/guide/control-flow.html)
 - [Closures](https://mind-code-ai.github.io/nate-docs/guide/closures.html)
 - [Variables and constants](https://mind-code-ai.github.io/nate-docs/guide/variables.html)
-- [Tasks and channels](https://mind-code-ai.github.io/nate-docs/guide/concurrency.html)
+- [Structured concurrency](https://mind-code-ai.github.io/nate-docs/guide/concurrency.html)
 - [Design by Contract](https://mind-code-ai.github.io/nate-docs/advanced/contracts.html)
 - [Capabilities, taint, and scoped execution](https://mind-code-ai.github.io/nate-docs/advanced/security.html)
 - [AI Integration](https://mind-code-ai.github.io/nate-docs/advanced/ai.html)
