@@ -125,10 +125,11 @@ body[data-page="home"] .content main { max-width: 1100px; }
 .quick-links a span { color: var(--nate-muted); }
 .site-footnote { color: var(--nate-muted); font-size: 11px; margin-top: 44px; border-top: 1px solid var(--nate-line); padding-top: 20px; }
 .search-backdrop { position: fixed; inset: 0; background: #101b1466; z-index: 199; border: 0; width: 100%; cursor: default; }
-.search-close { position: absolute; right: 25px; top: 25px; width: 36px; height: 36px; border: 0; background: var(--bg); color: var(--fg); font-size: 22px; cursor: pointer; }
+.search-close { position: absolute; z-index: 1; right: 25px; top: 25px; width: 36px; height: 36px; border: 0; background: var(--bg); color: var(--fg); font-size: 22px; cursor: pointer; }
 #mdbook-search-wrapper:not(.hidden) { position: fixed; z-index: 200; top: 100px; left: 50%; transform: translateX(-50%); width: min(680px, calc(100vw - 32px)); max-height: calc(100dvh - 130px); overflow: auto; background: var(--nate-panel); border: 1px solid var(--nate-line); box-shadow: 0 24px 100px #101b1433; border-radius: 12px; padding: 16px; box-sizing: border-box; }
 #mdbook-searchbar { box-sizing: border-box; font-size: 17px; padding: 16px 50px 16px 16px; width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--nate-line); border-radius: 7px; }
 .searchresults-outer { margin: 0; }
+#mdbook-searchresults-header { color: var(--nate-muted); }
 #mdbook-searchresults { margin: 12px 0 0; padding: 0; }
 #mdbook-searchresults li { border-bottom: 1px solid var(--nate-line); padding: 14px 8px; list-style: none; }
 #mdbook-searchresults a { color: var(--fg); font-size: 15px; }

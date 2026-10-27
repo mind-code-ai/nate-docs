@@ -110,7 +110,7 @@
     }, {rootMargin: '-80px 0px -65% 0px'}); headings.forEach(h => observer.observe(h));
   }
   customElements.whenDefined('mdbook-sidebar-scrollbox').then(() => {
-    const chapters = [...document.querySelectorAll('.sidebar a[href]')];
+    const chapters = [...document.querySelectorAll('.sidebar a[href]')].filter(a => !a.getAttribute('href').includes('#'));
     const current = chapters.findIndex(a => a.classList.contains('active')); if (current < 0) return;
     const footer = el('nav', '', 'chapter-footer'); footer.setAttribute('aria-label', 'Chapter navigation');
     [[current - 1, '← Previous'], [current + 1, 'Next →']].forEach(([index, text]) => {
