@@ -3,14 +3,18 @@
   const el = (tag, text = '', cls = '') => Object.assign(document.createElement(tag), {textContent: text, className: cls});
   const link = (text, path, cls) => Object.assign(el('a', text, cls), {href: new URL(path, root)});
   const main = document.querySelector('main');
-  const home = /\/(?:index\.html|introduction\.html)?$/.test(location.pathname);
+  const currentRoute = location.pathname.slice(root.pathname.length);
+  const home = ['', 'index.html', 'introduction.html'].includes(currentRoute);
   document.body.dataset.page = home ? 'home' : 'chapter';
   const title = document.querySelector('.menu-title');
   const brand = link('Nate', 'index.html', 'nate-brand');
   const logo = Object.assign(el('img'), {src: new URL('favicon.svg', root), alt: ''});
-  brand.prepend(logo); brand.append(el('span', 'Documentation'));
+  brand.prepend(logo);
   const container = el('div', '', 'menu-title'); container.append(brand); title.replaceWith(container);
   const controls = document.querySelector('.left-buttons');
+  const navigation = el('nav', '', 'site-navigation'); navigation.setAttribute('aria-label', 'Main navigation');
+  navigation.append(link('Documentation', 'getting-started/hello-world.html'), link('Standard library', 'stdlib/overview.html'), link('Language specification', 'specs/index.html'));
+  container.after(navigation);
   document.querySelector('.menu-bar').setAttribute('role', 'banner');
   const oldToggle = document.querySelector('#mdbook-sidebar-toggle');
   const sidebarToggle = el('button', '', 'icon-button'); sidebarToggle.type = 'button';
@@ -70,7 +74,28 @@
     hljs.registerLanguage('nate', h => ({keywords: {keyword: 'func return if else for in while break continue const struct enum match interface impl import as spawn concurrent channel send receive guard on error panic defer requires ensures', literal: 'true false nil', built_in: 'print len append assert sandbox is_error'}, contains: [h.HASH_COMMENT_MODE, h.QUOTE_STRING_MODE, h.APOS_STRING_MODE, h.C_NUMBER_MODE]}));
     document.querySelectorAll('code.language-nate').forEach(code => { code.textContent = code.textContent; code.removeAttribute('data-highlighted'); hljs.highlightBlock(code); });
   }
-  if (home) return;
+  if (home) {
+    const tabs = [...main.querySelectorAll('[role="tab"]')];
+    const selectTab = tab => {
+      tabs.forEach(item => {
+        const selected = item === tab;
+        item.setAttribute('aria-selected', String(selected)); item.tabIndex = selected ? 0 : -1;
+        document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+      });
+    };
+    tabs.forEach((tab, index) => {
+      tab.onclick = () => selectTab(tab);
+      tab.onkeydown = event => {
+        const direction = {ArrowRight: 1, ArrowLeft: -1}[event.key];
+        let target;
+        if (direction) target = tabs[(index + direction + tabs.length) % tabs.length];
+        else if (event.key === 'Home') target = tabs[0];
+        else if (event.key === 'End') target = tabs.at(-1);
+        if (target) { event.preventDefault(); event.stopPropagation(); selectTab(target); target.focus(); }
+      };
+    });
+    return;
+  }
   const heading = main.querySelector('h1');
   const group = location.pathname.split('/').at(-2).replaceAll('-', ' ');
   const crumb = el('nav', '', 'breadcrumb'); crumb.setAttribute('aria-label', 'Breadcrumb');
