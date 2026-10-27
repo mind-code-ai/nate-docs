@@ -1,0 +1,305 @@
+{
+  "version": "1.0.0-rc.1",
+  "runtime": "tree-walking interpreter",
+  "milestone": "v1.0.0",
+  "frozen_keywords": [
+    "func",
+    "return",
+    "if",
+    "else",
+    "for",
+    "break",
+    "continue",
+    "switch",
+    "case",
+    "default",
+    "match",
+    "const",
+    "struct",
+    "enum",
+    "interface",
+    "import",
+    "spawn",
+    "channel",
+    "guard",
+    "on",
+    "or",
+    "and",
+    "not",
+    "true",
+    "false",
+    "nil",
+    "panic",
+    "concurrent",
+    "error"
+  ],
+  "preview_keywords": [
+    "supervise",
+    "expects",
+    "ensures",
+    "move",
+    "strict",
+    "async",
+    "await"
+  ],
+  "modules": {
+    "math": {
+      "spec": "specs/stdlib/math.md",
+      "tests": [
+        "tests/conformance/stdlib_math_test.nate"
+      ],
+      "exports": {
+        "Abs": 1,
+        "Max": 2,
+        "Min": 2,
+        "Clamp": 3,
+        "Sign": 1,
+        "Pow": 2,
+        "Factorial": 1,
+        "Gcd": 2,
+        "Lcm": 2,
+        "IsEven": 1,
+        "IsOdd": 1,
+        "PI": null,
+        "E": null
+      },
+      "preview_exports": {}
+    },
+    "strings": {
+      "spec": "specs/stdlib/strings.md",
+      "tests": [
+        "tests/conformance/stdlib_strings_test.nate"
+      ],
+      "exports": {
+        "Repeat": 2,
+        "StartsWith": 2,
+        "EndsWith": 2,
+        "Contains": 2,
+        "IndexOf": 2,
+        "Reverse": 1,
+        "IsEmpty": 1,
+        "PadLeft": 3,
+        "PadRight": 3,
+        "Lines": 1,
+        "Words": 1,
+        "Join": 2
+      },
+      "preview_exports": {}
+    },
+    "collections": {
+      "spec": "specs/stdlib/collections.md",
+      "tests": [
+        "tests/conformance/stdlib_collections_test.nate"
+      ],
+      "exports": {
+        "Map": 2,
+        "Filter": 2,
+        "Reduce": 3,
+        "ForEach": 2,
+        "Any": 2,
+        "All": 2,
+        "Find": 2,
+        "Take": 2,
+        "Drop": 2,
+        "Zip": 2,
+        "Enumerate": 1,
+        "Partition": 2,
+        "GroupBy": 2
+      },
+      "preview_exports": {}
+    },
+    "io": {
+      "spec": "specs/stdlib/io.md",
+      "tests": [
+        "tests/conformance/stdlib_io_test.nate"
+      ],
+      "exports": {
+        "ReadFile": 1,
+        "WriteFile": 2,
+        "AppendFile": 2,
+        "FileExists": 1,
+        "Println": 1,
+        "Printf": 2,
+        "ReadLines": 1,
+        "WriteLines": 2
+      },
+      "preview_exports": {}
+    },
+    "time": {
+      "spec": "specs/stdlib/time.md",
+      "tests": [
+        "tests/conformance/stdlib_time_test.nate"
+      ],
+      "exports": {
+        "Now": 0,
+        "Sleep": 1,
+        "Elapsed": 1,
+        "Measure": 1,
+        "FormatDuration": 1,
+        "Benchmark": 2,
+        "Timer": 0,
+        "TimerStart": 1,
+        "TimerStop": 1,
+        "TimerElapsed": 1
+      },
+      "preview_exports": {}
+    },
+    "fmt": {
+      "spec": "specs/stdlib/fmt.md",
+      "tests": [
+        "tests/conformance/stdlib_fmt_test.nate"
+      ],
+      "exports": {
+        "Sprintf": 2,
+        "Printf": 2,
+        "Quote": 1,
+        "Indent": 2,
+        "Join": 2,
+        "Center": 3,
+        "Truncate": 3,
+        "WrapText": 2,
+        "Table": 2
+      },
+      "preview_exports": {}
+    },
+    "random": {
+      "spec": "specs/stdlib/random.md",
+      "tests": [
+        "tests/conformance/stdlib_random_test.nate"
+      ],
+      "exports": {
+        "Random": 0,
+        "RandomInt": 2,
+        "Seed": 1,
+        "RandomBool": 0,
+        "RandomChoice": 1,
+        "Shuffle": 1,
+        "Sample": 2,
+        "RandomRange": 3,
+        "Dice": 1,
+        "D6": 0,
+        "D20": 0,
+        "CoinFlip": 0,
+        "Weighted": 1
+      },
+      "preview_exports": {}
+    },
+    "json": {
+      "spec": "specs/stdlib/json.md",
+      "tests": [
+        "tests/conformance/stdlib_json_test.nate"
+      ],
+      "exports": {
+        "Decode": 1,
+        "Encode": 1,
+        "EncodePretty": 1,
+        "Valid": 1,
+        "Get": 3,
+        "GetPath": 2,
+        "Merge": 2,
+        "Clone": 1
+      },
+      "preview_exports": {}
+    },
+    "testing": {
+      "spec": "specs/stdlib/testing.md",
+      "tests": [
+        "tests/conformance/stdlib_testing_test.nate"
+      ],
+      "exports": {
+        "AssertEqual": 3,
+        "AssertNotEqual": 3,
+        "AssertTrue": 2,
+        "AssertFalse": 2,
+        "AssertNil": 2,
+        "AssertNotNil": 2,
+        "AssertError": 2,
+        "AssertNoError": 2,
+        "AssertContains": 3,
+        "AssertLength": 3,
+        "AssertGreater": 3,
+        "AssertLess": 3,
+        "AssertBetween": 4,
+        "Skip": 1,
+        "Todo": 1
+      },
+      "preview_exports": {}
+    },
+    "option": {
+      "spec": "specs/stdlib/option.md",
+      "tests": [
+        "tests/conformance/stdlib_option_test.nate"
+      ],
+      "exports": {
+        "Is_some": 1,
+        "Is_none": 1,
+        "Unwrap_or": 2,
+        "Unwrap": 1,
+        "Map": 2,
+        "And_then": 2,
+        "Filter": 2,
+        "To_array": 1,
+        "Some": 1,
+        "Option": null
+      },
+      "preview_exports": {}
+    },
+    "result": {
+      "spec": "specs/stdlib/result.md",
+      "tests": [
+        "tests/conformance/stdlib_result_test.nate"
+      ],
+      "exports": {
+        "Is_ok": 1,
+        "Is_err": 1,
+        "Unwrap_or": 2,
+        "Unwrap": 1,
+        "Err_value": 1,
+        "Map_ok": 2,
+        "Map_err": 2,
+        "And_then": 2,
+        "Ok": 1,
+        "Err": 1,
+        "Result": null
+      },
+      "preview_exports": {}
+    },
+    "http": {
+      "spec": "specs/stdlib/http.md",
+      "tests": [
+        "tests/conformance/stdlib_http_test.nate",
+        "tests/fixtures/http_client.nate"
+      ],
+      "exports": {
+        "Get": 1,
+        "Post": 3,
+        "PostJson": 2,
+        "Put": 3,
+        "PutJson": 2,
+        "Delete": 1,
+        "Request": 4,
+        "IsOk": 1,
+        "IsRedirect": 1,
+        "IsClientError": 1,
+        "IsServerError": 1,
+        "GetJsonBody": 1,
+        "ParseRequest": 1,
+        "BuildResponse": 3,
+        "JsonResponse": 2,
+        "HtmlResponse": 2,
+        "TextResponse": 2
+      },
+      "preview_exports": {
+        "TcpConnect": 2,
+        "TcpSend": 2,
+        "TcpRecv": 2,
+        "TcpRecvAll": 2,
+        "TcpClose": 1,
+        "TcpBind": 1,
+        "TcpListen": 2,
+        "TcpAccept": 1,
+        "TcpAcceptSimple": 1
+      }
+    }
+  }
+}

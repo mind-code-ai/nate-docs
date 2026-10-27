@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mind-code-ai.github.io/nate-docs/sitemap.xml
