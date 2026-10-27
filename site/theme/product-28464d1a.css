@@ -93,6 +93,14 @@ body[data-page="home"] .content main { max-width: 1184px; margin: 0 auto; }
 .capability-strip { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--nate-line); border-bottom: 1px solid var(--nate-line); padding: 20px 0; font-size: 12px; color: var(--nate-muted); }
 .capability-strip strong { color: var(--fg); font-weight: 550; }
 .capability-strip code { background: transparent; color: var(--fg); }
+.purpose-section { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; padding: 58px 0; border-bottom: 1px solid var(--nate-line); }
+.purpose-intro h2 { margin: 0; padding: 0; font-size: 28px; font-weight: 620; letter-spacing: -.9px; line-height: 1.3; max-width: 380px; }
+.purpose-intro p:not(.section-kicker) { font-size: 14px; color: var(--nate-muted); margin: 18px 0 22px; }
+.purpose-intro > a { font-size: 12px; text-decoration: underline; }
+.purpose-details { margin: 0; border-left: 1px solid var(--nate-line); padding-left: 32px; }
+.purpose-details > div + div { margin-top: 24px; }
+.purpose-details dt { color: var(--fg); font-size: 14px; font-weight: 600; }
+.purpose-details dd { margin: 7px 0 0; font-size: 13px; line-height: 1.75; color: var(--nate-muted); }
 .resource-section { padding: 58px 0; }
 .section-intro { display: flex; gap: 48px; justify-content: space-between; align-items: end; margin-bottom: 25px; }
 .section-kicker { font: 10px var(--mono-font); color: var(--nate-muted) !important; letter-spacing: 1.1px; margin: 0 0 12px !important; }
@@ -153,6 +161,8 @@ body[data-page="home"] .content main { max-width: 1184px; margin: 0 auto; }
   .section-intro { display: block; }
   .section-intro > p { margin-top: 15px; max-width: 500px; }
   .resource-section { padding: 36px 0; }
+  .purpose-section { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 36px 0; }
+  .purpose-details { border-left: 0; border-top: 1px solid var(--nate-line); padding: 24px 0 0; }
   .release-panel { grid-template-columns: minmax(0, 1fr); gap: 25px; padding: 24px; }
   .release-facts { border-left: 0; border-top: 1px solid var(--nate-line); padding: 22px 0 0; }
   .product-footer { flex-direction: column; gap: 16px; }

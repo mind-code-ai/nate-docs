@@ -6,7 +6,7 @@
 
 # Nate makes error recovery readable.
 
-<p class="product-lead">Write scripts with familiar control flow and recovery built into the syntax. A single <code>or</code> gives a failed operation a fallback.</p>
+<p class="product-lead">Nate is a small programming language for scripts, CLI tools, and learning. It combines Go-inspired readability with error recovery and structured tasks built into the language.</p>
 <div class="product-actions"><a class="button-primary" href="getting-started/hello-world.html">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="guide/errors.html">See how recovery works <span aria-hidden="true">↗</span></a></div>
 <p class="access-note">Read the guides now. Installing the release candidate requires repository access.</p>
 </div>
@@ -49,6 +49,15 @@ print("Still running")
 </section>
 
 <div class="capability-strip" aria-label="Interpreter capabilities"><span>Runs on <strong>macOS &amp; Linux</strong></span><span>Test your code with <code>nate test</code></span><span><strong>12 modules</strong> in the standard library</span></div>
+
+<section class="purpose-section" aria-labelledby="why-nate-exists">
+<div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Make everyday programs easier to understand.</h2><p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on a small set of concepts, explicit recovery, and structured concurrency.</p><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
+<dl class="purpose-details">
+<div><dt>A language you can learn in smaller steps</dt><dd>Familiar control flow and a compact set of core concepts aim to keep the learning curve manageable as your scripts grow.</dd></div>
+<div><dt>Recovery beside the operation that can fail</dt><dd>Use <code>or</code> for a local fallback. Use <code>guard</code> to handle a failure across a group of operations in one recovery block.</dd></div>
+<div><dt>Task lifetimes you can follow in the code</dt><dd>A <code>concurrent</code> block waits for the tasks it starts to finish. Channels let those tasks exchange values.</dd></div>
+</dl>
+</section>
 
 <section class="resource-section" aria-labelledby="build-with-nate">
 <div class="section-intro"><div><p class="section-kicker">THE DOCUMENTATION</p><h2 id="build-with-nate">Build your understanding of Nate.</h2></div><p>Follow the first-program guide, look up an API, or check exactly what the runtime guarantees.</p></div>

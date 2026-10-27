@@ -12,7 +12,7 @@
         <meta name="color-scheme" content="light dark">
         <meta name="nate-version" content="1.0.0-rc.1">
 
-        <meta name="description" content="Nate makes error recovery readable. Learn the scripting language, explore its standard library, and understand the interpreter contract.">
+        <meta name="description" content="Nate is a small programming language for scripts, CLI tools, and learning. Discover why it was created and how it approaches error recovery and structured tasks.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -32,7 +32,7 @@
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/docs-88d4844a.css">
-        <link rel="stylesheet" href="theme/product-4ae580b2.css">
+        <link rel="stylesheet" href="theme/product-28464d1a.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -40,7 +40,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-e7954457.js";
+            window.path_to_searchindex_js = "searchindex-1192d3a7.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-4ad7ce49.js"></script>
@@ -189,7 +189,7 @@
 <div class="hero-copy">
 <a class="release-pill" href="specs/1.0-scope.html"><span class="status-dot" aria-hidden="true"></span>Meet Nate 1.0.0-rc.1<span aria-hidden="true">↗</span></a>
 <h1 id="nate-makes-error-recovery-readable"><a class="header" href="#nate-makes-error-recovery-readable">Nate makes error recovery readable.</a></h1>
-<p class="product-lead">Write scripts with familiar control flow and recovery built into the syntax. A single <code>or</code> gives a failed operation a fallback.</p>
+<p class="product-lead">Nate is a small programming language for scripts, CLI tools, and learning. It combines Go-inspired readability with error recovery and structured tasks built into the language.</p>
 
 <div class="product-actions"><a class="button-primary" href="getting-started/hello-world.html">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="guide/errors.html">See how recovery works <span aria-hidden="true">↗</span></a></div>
 
@@ -237,6 +237,32 @@ print("Still running")
 </section>
 <div class="capability-strip" aria-label="Interpreter capabilities"><span>Runs on <strong>macOS &amp; Linux</strong></span><span>Test your code with <code>nate test</code></span><span><strong>12 modules</strong> in the standard library</span></div>
 
+<section class="purpose-section" aria-labelledby="why-nate-exists">
+<div class="purpose-intro">
+<p class="section-kicker">WHY NATE EXISTS</p>
+<h2 id="why-nate-exists">Make everyday programs easier to understand.</h2>
+<p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on a small set of concepts, explicit recovery, and structured concurrency.</p>
+<a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
+
+<dl class="purpose-details">
+<div>
+<dt>A language you can learn in smaller steps</dt>
+<dd>Familiar control flow and a compact set of core concepts aim to keep the learning curve manageable as your scripts grow.</dd>
+</div>
+
+<div>
+<dt>Recovery beside the operation that can fail</dt>
+<dd>Use <code>or</code> for a local fallback. Use <code>guard</code> to handle a failure across a group of operations in one recovery block.</dd>
+</div>
+
+<div>
+<dt>Task lifetimes you can follow in the code</dt>
+<dd>A <code>concurrent</code> block waits for the tasks it starts to finish. Channels let those tasks exchange values.</dd>
+</div>
+
+</dl>
+
+</section>
 <section class="resource-section" aria-labelledby="build-with-nate">
 <div class="section-intro">
 <div>
