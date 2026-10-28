@@ -2,9 +2,9 @@
 
 # Native compilation
 
-Nate builds native executables without changing your program's syntax. Use the
-default C backend for the full supported language. Choose the experimental Nate
-Compiler to try Nate's own instruction generation for scalar programs.
+Use `nate build` to compile your program into a native executable. The default
+C backend supports the full release language. The experimental Nate Compiler
+generates ARM64 or x86-64 instructions for scalar programs.
 
 ## Choose a backend
 
@@ -14,10 +14,10 @@ Compiler to try Nate's own instruction generation for scalar programs.
 | `nate build program.nate --backend=c -o program` | Explicit C backend | Same as the default |
 | `nate build program.nate --backend=nate -o program` | Nate Compiler (experimental) | Scalar subset described below |
 
-Both produce executables that run without Nate or the source files installed.
-Builds require the host development toolchain. `NATE_CC` selects the toolchain
-driver executable. The C backend generates C; the Nate Compiler generates ARM64
-or x86-64 assembly and uses the host assembler and linker to package it.
+The executable runs without Nate or the source files installed. To build it,
+you need your platform's development toolchain; `NATE_CC` selects its driver.
+The C backend generates C. Nate Compiler generates assembly, then uses the
+host assembler and linker to create the executable.
 
 ## Try the Nate Compiler
 
@@ -77,10 +77,6 @@ Result/Option values, panic statements/hooks, concurrency, and general builtins
 still need the C backend. Unsupported code produces a compile-time diagnostic;
 the compiler does not silently select another backend. Local initialization
 around guards is checked conservatively across success and recovery paths.
-
-This compiler is experimental. Its current subset does not establish full
-Go/Rust language or performance parity. The C backend remains the default until
-the complete language, security, and ownership checks pass with Nate Compiler.
 
 ## Inspect compiler output
 

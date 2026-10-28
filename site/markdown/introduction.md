@@ -6,9 +6,8 @@
 
 # Nate makes error recovery readable.
 
-<p class="product-lead">Nate is a programming language that compiles to native executables while keeping code easy to read. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
+<p class="product-lead">Nate compiles readable code to native executables. Its design takes cues from Go, with error recovery and concurrent tasks that you can follow in the code.</p>
 <div class="product-actions"><a class="button-primary" href="getting-started/hello-world.html">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="guide/errors.html">See how recovery works <span aria-hidden="true">↗</span></a></div>
-<p class="access-note">Read the guides now. Installing the release candidate requires repository access.</p>
 </div>
 <div class="sample-workbench">
 <div class="workbench-head"><span class="file-mark" aria-hidden="true">N</span><span>examples.nate</span><span class="workbench-label">NATE</span></div>
@@ -70,16 +69,16 @@ close_channel(results)
 <div class="capability-strip" aria-label="Language capabilities"><span>Native builds on <strong>macOS &amp; Linux</strong></span><span>Compile with <code>nate build</code></span><span><strong>12 modules</strong> in the standard library</span></div>
 
 <section class="purpose-section" aria-labelledby="why-nate-exists">
-<div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Make everyday programs easier to understand.</h2><p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on familiar syntax, explicit recovery, and structured concurrency.</p><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
+<div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Code you can read and learn.</h2><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
 <dl class="purpose-details">
-<div><dt>A language you can learn in smaller steps</dt><dd>Familiar control flow and a compact set of core concepts aim to keep the learning curve manageable as your scripts grow.</dd></div>
+<div><dt>Start with familiar control flow</dt><dd>Use variables, functions, conditions, and loops to write your first programs.</dd></div>
 <div><dt>Recovery beside the operation that can fail</dt><dd>Use <code>or</code> for a local fallback. Use <code>guard</code> to handle a failure across a group of operations in one recovery block.</dd></div>
 <div><dt>Task lifetimes you can follow in the code</dt><dd>A <code>concurrent</code> block waits for the tasks it starts to finish. Channels let those tasks exchange values.</dd></div>
 </dl>
 </section>
 
 <section class="resource-section" aria-labelledby="build-with-nate">
-<div class="section-intro"><div><p class="section-kicker">THE DOCUMENTATION</p><h2 id="build-with-nate">Build your understanding of Nate.</h2></div><p>Follow the first-program guide, look up an API, or check exactly what the runtime guarantees.</p></div>
+<div class="section-intro"><div><p class="section-kicker">THE DOCUMENTATION</p><h2 id="build-with-nate">Learn Nate.</h2></div><p>Start with a program, then use the guides and reference as you need them.</p></div>
 <div class="resource-grid">
 <a class="resource-card" href="getting-started/hello-world.html"><span class="resource-icon" aria-hidden="true">&gt;_</span><h3>Your first Nate program</h3><p>Write a file, run it, and understand what happens at startup.</p><span class="resource-action">Follow the guide <span aria-hidden="true">→</span></span></a>
 <a class="resource-card" href="guide/variables.html"><span class="resource-icon" aria-hidden="true">{ }</span><h3>The language, explained</h3><p>Learn values, functions, error recovery, and tasks through examples.</p><span class="resource-action">Read the language guide <span aria-hidden="true">→</span></span></a>
@@ -89,7 +88,5 @@ close_channel(results)
 </section>
 
 <section class="release-panel" aria-labelledby="release-heading"><div><p class="section-kicker">CURRENT RELEASE</p><h2 id="release-heading">A clear contract for the first release.</h2><p>The 1.0 release candidate includes native compilation through C and an interpreter for development. Compile with <code>nate build</code> and run the executable without Nate installed. The specifications define the supported language, standard library, and CLI behavior.</p><div class="release-actions"><a href="specs/1.0-scope.html">Review the 1.0 scope <span aria-hidden="true">→</span></a><a href="getting-started/installation.html">Installation instructions <span aria-hidden="true">→</span></a></div></div><div class="release-facts"><span class="release-tag">1.0.0-rc.1</span><dl><div><dt>Runtime</dt><dd>Native C backend, interpreter</dd></div><div><dt>Platforms</dt><dd>macOS, Linux</dd></div><div><dt>Status</dt><dd>Release candidate</dd></div><div><dt>Install access</dt><dd>Private repository</dd></div></dl></div></section>
-
-<details class="preview-note"><summary>What is still in preview?</summary><p>The VM, legacy LLVM backend, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="specs/1.0-scope.html">release scope</a> before depending on those features.</p></details>
 
 <footer class="product-footer"><span><strong>Nate</strong> · The language documentation</span><nav aria-label="Footer navigation"><a href="reference/cli.html">CLI reference</a><a href="specs/index.html">Specification</a><a href="llms.txt">For AI tools</a></nav></footer>

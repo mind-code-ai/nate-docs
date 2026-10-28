@@ -33,7 +33,7 @@
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="theme/docs-88d4844a.css">
-        <link rel="stylesheet" href="theme/product-7aa3ba76.css">
+        <link rel="stylesheet" href="theme/product-5a51c86c.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -41,7 +41,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-742950a8.js";
+            window.path_to_searchindex_js = "searchindex-4b940d77.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-64fcdbdf.js"></script>
@@ -187,11 +187,9 @@
 <div class="hero-copy">
 <a class="release-pill" href="#nate-10-scope"><span class="status-dot" aria-hidden="true"></span>Meet Nate 1.0.0-rc.1<span aria-hidden="true">↗</span></a>
 <h1 id="nate-makes-error-recovery-readable"><a class="header" href="#nate-makes-error-recovery-readable">Nate makes error recovery readable.</a></h1>
-<p class="product-lead">Nate is a programming language that compiles to native executables while keeping code easy to read. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
+<p class="product-lead">Nate compiles readable code to native executables. Its design takes cues from Go, with error recovery and concurrent tasks that you can follow in the code.</p>
 
 <div class="product-actions"><a class="button-primary" href="#hello-world">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="#errors-and-recovery">See how recovery works <span aria-hidden="true">↗</span></a></div>
-
-<p class="access-note">Read the guides now. Installing the release candidate requires repository access.</p>
 
 </div>
 
@@ -256,14 +254,13 @@ close_channel(results)
 <section class="purpose-section" aria-labelledby="why-nate-exists">
 <div class="purpose-intro">
 <p class="section-kicker">WHY NATE EXISTS</p>
-<h2 id="why-nate-exists">Make everyday programs easier to understand.</h2>
-<p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on familiar syntax, explicit recovery, and structured concurrency.</p>
+<h2 id="why-nate-exists">Code you can read and learn.</h2>
 <a href="#variables-and-constants">Explore the language guide <span aria-hidden="true">→</span></a></div>
 
 <dl class="purpose-details">
 <div>
-<dt>A language you can learn in smaller steps</dt>
-<dd>Familiar control flow and a compact set of core concepts aim to keep the learning curve manageable as your scripts grow.</dd>
+<dt>Start with familiar control flow</dt>
+<dd>Use variables, functions, conditions, and loops to write your first programs.</dd>
 </div>
 
 <div>
@@ -283,9 +280,9 @@ close_channel(results)
 <div class="section-intro">
 <div>
 <p class="section-kicker">THE DOCUMENTATION</p>
-<h2 id="build-with-nate">Build your understanding of Nate.</h2>
+<h2 id="build-with-nate">Learn Nate.</h2>
 </div>
-<p>Follow the first-program guide, look up an API, or check exactly what the runtime guarantees.</p>
+<p>Start with a program, then use the guides and reference as you need them.</p>
 </div>
 
 <div class="resource-grid">
@@ -336,9 +333,6 @@ close_channel(results)
 </dl>
 </div>
 </section>
-<details class="preview-note"><summary>What is still in preview?</summary>
-<p>The VM, legacy LLVM backend, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="#nate-10-scope">release scope</a> before depending on those features.</p>
-</details>
 <footer class="product-footer"><span><strong>Nate</strong> · The language documentation</span><nav aria-label="Footer navigation"><a href="#cli-commands">CLI reference</a><a href="#nate-10-specifications">Specification</a><a href="llms.txt">For AI tools</a></nav></footer>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
@@ -404,9 +398,9 @@ func main() { print(greeting + ", Nate!") }
 <a href="#variables-and-constants">variables</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="native-compilation"><a class="header" href="#native-compilation">Native compilation</a></h1>
-<p>Nate builds native executables without changing your program’s syntax. Use the
-default C backend for the full supported language. Choose the experimental Nate
-Compiler to try Nate’s own instruction generation for scalar programs.</p>
+<p>Use <code>nate build</code> to compile your program into a native executable. The default
+C backend supports the full release language. The experimental Nate Compiler
+generates ARM64 or x86-64 instructions for scalar programs.</p>
 <h2 id="choose-a-backend"><a class="header" href="#choose-a-backend">Choose a backend</a></h2>
 <div class="table-wrapper">
 <table>
@@ -420,10 +414,10 @@ Compiler to try Nate’s own instruction generation for scalar programs.</p>
 </tbody>
 </table>
 </div>
-<p>Both produce executables that run without Nate or the source files installed.
-Builds require the host development toolchain. <code>NATE_CC</code> selects the toolchain
-driver executable. The C backend generates C; the Nate Compiler generates ARM64
-or x86-64 assembly and uses the host assembler and linker to package it.</p>
+<p>The executable runs without Nate or the source files installed. To build it,
+you need your platform’s development toolchain; <code>NATE_CC</code> selects its driver.
+The C backend generates C. Nate Compiler generates assembly, then uses the
+host assembler and linker to create the executable.</p>
 <h2 id="try-the-nate-compiler"><a class="header" href="#try-the-nate-compiler">Try the Nate Compiler</a></h2>
 <p>Save this complete program as <code>counter.nate</code>:</p>
 <pre><code class="language-nate">const step = 1.5
@@ -469,9 +463,6 @@ Result/Option values, panic statements/hooks, concurrency, and general builtins
 still need the C backend. Unsupported code produces a compile-time diagnostic;
 the compiler does not silently select another backend. Local initialization
 around guards is checked conservatively across success and recovery paths.</p>
-<p>This compiler is experimental. Its current subset does not establish full
-Go/Rust language or performance parity. The C backend remains the default until
-the complete language, security, and ownership checks pass with Nate Compiler.</p>
 <h2 id="inspect-compiler-output"><a class="header" href="#inspect-compiler-output">Inspect compiler output</a></h2>
 <pre><code class="language-sh">nate compiler counter.nate --emit-ir
 nate compiler counter.nate --emit-asm
