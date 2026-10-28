@@ -36,6 +36,13 @@ Run with the tree-walking interpreter.
 Default path is `.`. Discovers `test_*` functions in `*_test.nate`
 files, or in the given file. Exit 0 if all pass.
 
+**`nate build <file.nate> [-o output]`**
+
+Compile to a native executable through the system C compiler. LLVM is not
+required. Imports are bundled at build time. The output runs without Nate or
+source files. See [native-compilation.md](native-compilation.md) for toolchain,
+installation, output naming, and error behavior. `NATE_CC` selects the compiler.
+
 **`nate bench [path]`**
 
 Default path is `.`. Discovers `bench_*` functions. Auto-calibrates
@@ -78,7 +85,8 @@ All of these hold in the current binary:
 3. No banner is printed outside the REPL.
 4. `nate run --vm` is rejected with a clear message if the binary was
    built without `NATE_VM`.
-5. `nate build` is rejected with a clear message if built without LLVM.
+5. `nate build` is included by default and reports missing host compiler or
+   development files as build errors.
 6. Exit codes match the table above.
 
 The version string is `NATE_VERSION` in `src/commands.h`. It stays
@@ -89,21 +97,25 @@ The version string is `NATE_VERSION` in `src/commands.h`. It stays
 Not a 1.0 compatibility promise:
 
 ```
-nate build <file.nate> [-o output]
 nate lsp
+nate build <file.nate> --backend=nate [-o output]
+nate compiler <file.nate> --emit-ir|--emit-asm [--target=target]
 nate init [name]
 nate get <package>
 nate lock
 nate install
 ```
 
-`nate build` requires an LLVM-enabled binary. Native compilation is
-preview. See GitHub issue #68.
+The legacy LLVM backend is experimental source; `nate build` uses the C backend.
+The experimental Nate compiler is selected explicitly with `--backend=nate`.
+`--backend=c` selects the default. See [nate-compiler.md](nate-compiler.md) for
+the scalar subset, assembly targets, diagnostics, and promotion gates.
 
 ## Environment
 
 ```
 NATE_STDLIB  Explicit host standard-library directory
+NATE_CC      Host C compiler executable for nate build (default: cc)
 ```
 
 NATE_STDLIB is tested by `scripts/install_contract.py`. NATE_PATH and

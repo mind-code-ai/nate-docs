@@ -35,6 +35,8 @@ specs/
   1.0-scope.md              What is in, preview, and out
   versioning.md             1.0.0 and compatibility promises
   compatibility.md          Interpreter vs VM vs LLVM
+  native-compilation.md     Native builds, toolchain, and deployment
+  nate-compiler.md          Owned typed compiler and machine code roadmap
   conformance.md            How tests prove the spec
   cli.md                    Frozen CLI
   language/                 Language semantics
@@ -80,8 +82,8 @@ Until a section is frozen, read behavior from:
 - `examples/*.nate` for intended usage
 - `stdlib/*.nate` for module APIs
 
-The tree-walking interpreter is the 1.0 runtime. The bytecode VM and
-LLVM backend are preview until `compatibility.md` says otherwise.
+Native C executables and the tree-walking interpreter implement the 1.0 language.
+The bytecode VM and legacy LLVM backend remain preview.
 
 ## Related docs
 

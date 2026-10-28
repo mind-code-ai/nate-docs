@@ -2,10 +2,10 @@
 
 # Memory and GC
 
-Status: frozen for the 1.0 interpreter. Implementation in `src/interp_gc.c` and
+Status: frozen for the interpreter and native C backend. Implementation in `src/interp_gc.c` and
 [runtime/safety.md](../runtime/safety.md).
 
-Frozen 1.0 memory is the interpreter GC. LLVM AOT and the bytecode VM
+Frozen 1.0 memory uses the shared runtime GC. Legacy LLVM AOT and the bytecode VM
 are preview. Their allocators are not a 1.0 promise.
 
 ## Guarantees

@@ -2,18 +2,15 @@
 
 # Runtime Compatibility
 
-Nate 1.0 has three execution paths. Only one is the language.
+Nate supports native C compilation and interpreted development. Both implement
+the frozen language.
 
-```
-┌──────────────────────────┬──────────┬─────────────────────────┐
-│ Runtime                  │ 1.0 role │ Command                 │
-├──────────────────────────┼──────────┼─────────────────────────┤
-│ Tree-walking interpreter │ Source of│ nate run file.nate      │
-│                          │ truth    │                         │
-│ Bytecode VM              │ Preview  │ nate run file.nate --vm │
-│ LLVM AOT                 │ Preview  │ nate build file.nate    │
-└──────────────────────────┴──────────┴─────────────────────────┘
-```
+| Runtime | Role | Command |
+|---------|------|---------|
+| Native C backend | Supported native executables | `nate build file.nate` |
+| Tree-walking interpreter | Reference implementation | `nate run file.nate` |
+| Bytecode VM | Preview | `nate run file.nate --vm` |
+| Legacy LLVM backend | Experimental source | Development only |
 
 If these disagree, the interpreter is correct. The other runtime is a
 bug or an advertised limitation.
@@ -44,16 +41,21 @@ Rules for 1.0:
 Known-issues belong in this file as they are discovered. Do not hide
 them in issue comments.
 
-## LLVM AOT
+## Native C backend
 
-`nate build` emits a native binary. It requires a Nate build with LLVM.
+`nate build` compiles ahead of time through C and links the checked Nate runtime.
+It needs a system C compiler at build time and no LLVM installation. Executables
+bundle imports and run without Nate or source files. All frozen conformance test
+functions run natively through `scripts/native_suite.py`. Build and deployment
+semantics are specified in [native-compilation.md](native-compilation.md).
 
-Rules for 1.0:
+Missing, circular, or invalid imports fail at build time. This intentionally
+moves those failures earlier than `nate run`. Negative program checks distinguish
+build errors from errors raised by an executable. Timing and thread ordering
+are not compatibility guarantees.
 
-1. AOT is preview. Install docs must not require LLVM to run Nate.
-2. Document missing builtins instead of implying C-level completeness.
-3. GitHub issue #68 remains open until AOT has its own freeze spec.
-4. `make` must still produce a working interpreter without LLVM.
+The old LLVM code generator remains experimental source in `src/compiler/`.
+It is not the backend used by `nate build`.
 
 ## Parity definition
 
@@ -69,7 +71,7 @@ to match unless a test pins them.
 
 ## Analysis vs execution
 
-Static analysis in `src/analyzer*.c` runs before the interpreter.
+Static analysis in `src/analyzer*.c` runs before interpretation or native compilation.
 Data-race errors and ownership errors that reject a program are part
 of the language if they are frozen.
 
@@ -93,5 +95,5 @@ The VM skips interpreter analysis, executes spawn/concurrent synchronously,
 and does not implement guard or scoped capability callbacks. Direct interface
 assertions, module export isolation, and interpreter memory ownership are not
 VM compatibility promises. Its parity audit is informational and may fail.
-LLVM AOT requires an LLVM-enabled build and has incomplete builtin coverage.
+Legacy LLVM AOT requires LLVM development files and has incomplete builtin coverage.
 Neither backend is promoted by a candidate or stable interpreter tag.

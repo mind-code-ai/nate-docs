@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -208,6 +208,11 @@ file, same as <code>nate run &lt;file&gt;</code>.</p>
 <p><strong><code>nate test [path]</code></strong></p>
 <p>Default path is <code>.</code>. Discovers <code>test_*</code> functions in <code>*_test.nate</code>
 files, or in the given file. Exit 0 if all pass.</p>
+<p><strong><code>nate build &lt;file.nate&gt; [-o output]</code></strong></p>
+<p>Compile to a native executable through the system C compiler. LLVM is not
+required. Imports are bundled at build time. The output runs without Nate or
+source files. See <a href="native-compilation.html">native-compilation.md</a> for toolchain,
+installation, output naming, and error behavior. <code>NATE_CC</code> selects the compiler.</p>
 <p><strong><code>nate bench [path]</code></strong></p>
 <p>Default path is <code>.</code>. Discovers <code>bench_*</code> functions. Auto-calibrates
 toward about one second per benchmark.</p>
@@ -236,24 +241,29 @@ go to stderr. Program output goes to stdout.</p>
 <li>No banner is printed outside the REPL.</li>
 <li><code>nate run --vm</code> is rejected with a clear message if the binary was
 built without <code>NATE_VM</code>.</li>
-<li><code>nate build</code> is rejected with a clear message if built without LLVM.</li>
+<li><code>nate build</code> is included by default and reports missing host compiler or
+development files as build errors.</li>
 <li>Exit codes match the table above.</li>
 </ol>
 <p>The version string is <code>NATE_VERSION</code> in <code>src/commands.h</code>. It stays
 <code>1.0.0-rc.1</code> for the candidate and becomes <code>1.0.0</code> for the stable tag.</p>
 <h2 id="preview-commands"><a class="header" href="#preview-commands">Preview commands</a></h2>
 <p>Not a 1.0 compatibility promise:</p>
-<pre><code>nate build &lt;file.nate&gt; [-o output]
-nate lsp
+<pre><code>nate lsp
+nate build &lt;file.nate&gt; --backend=nate [-o output]
+nate compiler &lt;file.nate&gt; --emit-ir|--emit-asm [--target=target]
 nate init [name]
 nate get &lt;package&gt;
 nate lock
 nate install
 </code></pre>
-<p><code>nate build</code> requires an LLVM-enabled binary. Native compilation is
-preview. See GitHub issue #68.</p>
+<p>The legacy LLVM backend is experimental source; <code>nate build</code> uses the C backend.
+The experimental Nate compiler is selected explicitly with <code>--backend=nate</code>.
+<code>--backend=c</code> selects the default. See <a href="nate-compiler.html">nate-compiler.md</a> for
+the scalar subset, assembly targets, diagnostics, and promotion gates.</p>
 <h2 id="environment"><a class="header" href="#environment">Environment</a></h2>
 <pre><code>NATE_STDLIB  Explicit host standard-library directory
+NATE_CC      Host C compiler executable for nate build (default: cc)
 </code></pre>
 <p>NATE_STDLIB is tested by <code>scripts/install_contract.py</code>. NATE_PATH and
 NATE_DEBUG are not implemented or frozen.</p>

@@ -6,7 +6,7 @@
 
 # Nate makes error recovery readable.
 
-<p class="product-lead">Nate is a programming language designed to make code easier to read, write, and reason about. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
+<p class="product-lead">Nate is a programming language that compiles to native executables while keeping code easy to read. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
 <div class="product-actions"><a class="button-primary" href="getting-started/hello-world.html">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="guide/errors.html">See how recovery works <span aria-hidden="true">↗</span></a></div>
 <p class="access-note">Read the guides now. Installing the release candidate requires repository access.</p>
 </div>
@@ -67,7 +67,7 @@ close_channel(results)
 </div>
 </section>
 
-<div class="capability-strip" aria-label="Interpreter capabilities"><span>Runs on <strong>macOS &amp; Linux</strong></span><span>Test your code with <code>nate test</code></span><span><strong>12 modules</strong> in the standard library</span></div>
+<div class="capability-strip" aria-label="Language capabilities"><span>Native builds on <strong>macOS &amp; Linux</strong></span><span>Compile with <code>nate build</code></span><span><strong>12 modules</strong> in the standard library</span></div>
 
 <section class="purpose-section" aria-labelledby="why-nate-exists">
 <div class="purpose-intro"><p class="section-kicker">WHY NATE EXISTS</p><h2 id="why-nate-exists">Make everyday programs easier to understand.</h2><p>Nate was created to make code easier to read and learn, with behavior you can reason about. Its design takes inspiration from Go and focuses on familiar syntax, explicit recovery, and structured concurrency.</p><a href="guide/variables.html">Explore the language guide <span aria-hidden="true">→</span></a></div>
@@ -88,8 +88,8 @@ close_channel(results)
 </div>
 </section>
 
-<section class="release-panel" aria-labelledby="release-heading"><div><p class="section-kicker">CURRENT RELEASE</p><h2 id="release-heading">A clear contract for the first release.</h2><p>The 1.0 release candidate targets the tree-walking interpreter. The specifications define the supported language, standard library, and CLI behavior.</p><div class="release-actions"><a href="specs/1.0-scope.html">Review the 1.0 scope <span aria-hidden="true">→</span></a><a href="getting-started/installation.html">Installation instructions <span aria-hidden="true">→</span></a></div></div><div class="release-facts"><span class="release-tag">1.0.0-rc.1</span><dl><div><dt>Runtime</dt><dd>Interpreter</dd></div><div><dt>Platforms</dt><dd>macOS, Linux</dd></div><div><dt>Status</dt><dd>Release candidate</dd></div><div><dt>Install access</dt><dd>Private repository</dd></div></dl></div></section>
+<section class="release-panel" aria-labelledby="release-heading"><div><p class="section-kicker">CURRENT RELEASE</p><h2 id="release-heading">A clear contract for the first release.</h2><p>The 1.0 release candidate includes native compilation through C and an interpreter for development. Compile with <code>nate build</code> and run the executable without Nate installed. The specifications define the supported language, standard library, and CLI behavior.</p><div class="release-actions"><a href="specs/1.0-scope.html">Review the 1.0 scope <span aria-hidden="true">→</span></a><a href="getting-started/installation.html">Installation instructions <span aria-hidden="true">→</span></a></div></div><div class="release-facts"><span class="release-tag">1.0.0-rc.1</span><dl><div><dt>Runtime</dt><dd>Native C backend, interpreter</dd></div><div><dt>Platforms</dt><dd>macOS, Linux</dd></div><div><dt>Status</dt><dd>Release candidate</dd></div><div><dt>Install access</dt><dd>Private repository</dd></div></dl></div></section>
 
-<details class="preview-note"><summary>What is still in preview?</summary><p>VM/AOT, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="specs/1.0-scope.html">release scope</a> before depending on those features.</p></details>
+<details class="preview-note"><summary>What is still in preview?</summary><p>The VM, legacy LLVM backend, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="specs/1.0-scope.html">release scope</a> before depending on those features.</p></details>
 
 <footer class="product-footer"><span><strong>Nate</strong> · The language documentation</span><nav aria-label="Footer navigation"><a href="reference/cli.html">CLI reference</a><a href="specs/index.html">Specification</a><a href="llms.txt">For AI tools</a></nav></footer>

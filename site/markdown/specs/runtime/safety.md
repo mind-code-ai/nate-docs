@@ -2,7 +2,7 @@
 
 # Runtime Safety
 
-Status: frozen for the 1.0 interpreter.
+Status: frozen for the interpreter and native C backend.
 
 Nate 1.0 is safe by default. The interpreter must not produce undefined
 behavior for frozen programs.
@@ -42,7 +42,7 @@ explicit taint removal alias, not an input validator.
 The analyzer rejects some unsynchronized shared writes across `spawn`.
 Rejected programs are illegal, not runtime lotteries.
 
-This applies to the interpreter path. VM parity is preview. See
+This applies to the interpreter and native C paths. VM parity is preview. See
 [compatibility.md](../compatibility.md).
 
 ## Not frozen

@@ -119,9 +119,12 @@ A conformance file passes when:
 A negative test passes when the process exits non-zero for the documented
 reason: parse, analysis, or runtime.
 
-## Interpreter first
+## Interpreter and native compilation
 
 Conformance runs on the tree-walking interpreter.
+`python3 scripts/native_suite.py` compiles every conformance test function into
+native executables. `python3 scripts/native_contract.py` verifies standalone
+execution, negative programs, build errors, and deployment safety. Both are CI gates.
 VM and LLVM results are informational until
 [compatibility.md](compatibility.md) promotes them.
 

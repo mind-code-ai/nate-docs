@@ -24,7 +24,7 @@ specified in this directory.
 **Stdlib (frozen public API).** Removing or renaming a documented
 function requires 2.0. Adding a function is a minor release.
 
-**CLI (frozen commands).** `run`, `test`, `bench`, `doc`, `--version`,
+**CLI (frozen commands).** `run`, `build`, `test`, `bench`, `doc`, `--version`,
 and `--help` keep their meaning. New flags are minor. Removing a frozen
 flag is major.
 
@@ -53,9 +53,10 @@ A preview flag may disappear in 1.x.
 
 ## Interpreter vs other runtimes
 
-The version number describes the language and the interpreter.
+The version number describes the language, interpreter, and native C backend.
 
-`nate run --vm` and `nate build` are preview. A VM or AOT mismatch is
+`nate build` uses the supported C backend. The VM and legacy LLVM backend are
+preview. A VM or legacy LLVM mismatch is
 not a 1.0 language bug unless [compatibility.md](compatibility.md)
 has already promoted that runtime.
 

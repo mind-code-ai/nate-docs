@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -278,8 +278,11 @@ resources and all other CLI paths are not covered by a complete leak audit.</p>
 </ul>
 <p>A negative test passes when the process exits non-zero for the documented
 reason: parse, analysis, or runtime.</p>
-<h2 id="interpreter-first"><a class="header" href="#interpreter-first">Interpreter first</a></h2>
+<h2 id="interpreter-and-native-compilation"><a class="header" href="#interpreter-and-native-compilation">Interpreter and native compilation</a></h2>
 <p>Conformance runs on the tree-walking interpreter.
+<code>python3 scripts/native_suite.py</code> compiles every conformance test function into
+native executables. <code>python3 scripts/native_contract.py</code> verifies standalone
+execution, negative programs, build errors, and deployment safety. Both are CI gates.
 VM and LLVM results are informational until
 <a href="compatibility.html">compatibility.md</a> promotes them.</p>
 <h2 id="not-conformance"><a class="header" href="#not-conformance">Not conformance</a></h2>

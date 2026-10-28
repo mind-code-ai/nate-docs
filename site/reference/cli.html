@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,7 +187,7 @@
                     <main>
                         <h1 id="cli-commands"><a class="header" href="#cli-commands">CLI commands</a></h1>
 <p>The 1.0 interpreter commands are <code>nate</code>, <code>nate repl</code>, <code>nate run file.nate</code>,
-<code>nate test [path]</code>, <code>nate bench [path]</code>, <code>nate doc file.nate</code>, <code>--version</code>,
+<code>nate build file.nate [-o output]</code>, <code>nate test [path]</code>, <code>nate bench [path]</code>, <code>nate doc file.nate</code>, <code>--version</code>,
 and <code>--help</code>. With no arguments Nate starts the REPL; a filename runs it.</p>
 <p>Run is quiet by default. <code>--ast</code> and <code>--verbose</code> enable diagnostics.
 Run exits 0 on success, 1 on a runtime failure, 2 on parse/analysis failure,
@@ -197,7 +197,23 @@ fails; benchmark errors are not reported as successful measurements.</p>
 <code>bench_*</code> functions in <code>*_bench.nate</code> files. Both default to the current
 directory and inspect its immediate files. Doc prints comments and signatures.
 The REPL accepts <code>:help</code>, <code>:quit</code>, and <code>:clear</code>.</p>
-<p>VM (<code>run --vm</code>), LLVM (<code>build</code>), LSP, and package commands are preview.
+<p>Build compiles a native executable through the host C compiler; set <code>NATE_CC</code>
+to select a compiler executable. The result bundles imported modules and runs
+without Nate or the source files. Builds return 2 for compilation failures and
+3 for invalid arguments or a missing root source. Output defaults to the source
+name with its final <code>.nate</code> suffix removed, or with <code>.out</code> appended otherwise.</p>
+<p><code>nate build file.nate --backend=c</code> explicitly selects the default portable C
+backend. <code>--backend=nate</code> selects the experimental Nate Compiler, which emits
+ARM64/x86-64 instructions for its supported scalar subset: integers, floats,
+booleans, nil, string literals, scalar globals, direct calls, ordinary control
+flow, and guard recovery. Unsupported features produce a diagnostic.</p>
+<p>Inspect the experimental compiler with <code>nate compiler file.nate --emit-ir</code> or
+<code>--emit-asm</code>. Assembly inspection accepts <code>--target=arm64-macos</code>,
+<code>--target=x86_64-macos</code>, <code>--target=arm64-linux</code>, or <code>--target=x86_64-linux</code>.
+These targets do not configure cross-linking for <code>nate build</code>.
+See <a href="../getting-started/compilation.html">Native Compilation</a> for a complete example
+and current limitations.</p>
+<p>VM (<code>run --vm</code>), legacy LLVM source, LSP, and package commands are preview.
 NATE_STDLIB sets an explicit standard-library directory. NATE_PATH and
 NATE_DEBUG are not supported configuration contracts.</p>
 <p>See the <a href="../specs/cli.html">normative CLI specification</a>.</p>

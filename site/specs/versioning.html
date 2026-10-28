@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -200,7 +200,7 @@ specified in this directory.</p>
 <code>or</code>, changing <code>spawn</code> to require a different form, making <code>nil</code> truthy.</p>
 <p><strong>Stdlib (frozen public API).</strong> Removing or renaming a documented
 function requires 2.0. Adding a function is a minor release.</p>
-<p><strong>CLI (frozen commands).</strong> <code>run</code>, <code>test</code>, <code>bench</code>, <code>doc</code>, <code>--version</code>,
+<p><strong>CLI (frozen commands).</strong> <code>run</code>, <code>build</code>, <code>test</code>, <code>bench</code>, <code>doc</code>, <code>--version</code>,
 and <code>--help</code> keep their meaning. New flags are minor. Removing a frozen
 flag is major.</p>
 <p><strong>Preview.</strong> VM, LLVM, LSP, packages, async, supervise, move, contracts,
@@ -225,8 +225,9 @@ A preview flag may disappear in 1.x.</p>
 <li>Making a preview feature frozen without a minor release that says so</li>
 </ul>
 <h2 id="interpreter-vs-other-runtimes"><a class="header" href="#interpreter-vs-other-runtimes">Interpreter vs other runtimes</a></h2>
-<p>The version number describes the language and the interpreter.</p>
-<p><code>nate run --vm</code> and <code>nate build</code> are preview. A VM or AOT mismatch is
+<p>The version number describes the language, interpreter, and native C backend.</p>
+<p><code>nate build</code> uses the supported C backend. The VM and legacy LLVM backend are
+preview. A VM or legacy LLVM mismatch is
 not a 1.0 language bug unless <a href="compatibility.html">compatibility.md</a>
 has already promoted that runtime.</p>
 <h2 id="command-output"><a class="header" href="#command-output">Command output</a></h2>

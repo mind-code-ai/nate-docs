@@ -40,10 +40,10 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-4ad7ce49.js"></script>
+        <script src="../../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,7 +186,7 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="runtime-safety"><a class="header" href="#runtime-safety">Runtime Safety</a></h1>
-<p>Status: frozen for the 1.0 interpreter.</p>
+<p>Status: frozen for the interpreter and native C backend.</p>
 <p>Nate 1.0 is safe by default. The interpreter must not produce undefined
 behavior for frozen programs.</p>
 <h2 id="guarantees"><a class="header" href="#guarantees">Guarantees</a></h2>
@@ -215,7 +215,7 @@ explicit taint removal alias, not an input validator.</p>
 <h2 id="race-detection"><a class="header" href="#race-detection">Race detection</a></h2>
 <p>The analyzer rejects some unsynchronized shared writes across <code>spawn</code>.
 Rejected programs are illegal, not runtime lotteries.</p>
-<p>This applies to the interpreter path. VM parity is preview. See
+<p>This applies to the interpreter and native C paths. VM parity is preview. See
 <a href="../compatibility.html">compatibility.md</a>.</p>
 <h2 id="not-frozen"><a class="header" href="#not-frozen">Not frozen</a></h2>
 <ul>

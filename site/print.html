@@ -41,10 +41,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-4ad7ce49.js"></script>
+        <script src="toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,7 +187,7 @@
 <div class="hero-copy">
 <a class="release-pill" href="#nate-10-scope"><span class="status-dot" aria-hidden="true"></span>Meet Nate 1.0.0-rc.1<span aria-hidden="true">↗</span></a>
 <h1 id="nate-makes-error-recovery-readable"><a class="header" href="#nate-makes-error-recovery-readable">Nate makes error recovery readable.</a></h1>
-<p class="product-lead">Nate is a programming language designed to make code easier to read, write, and reason about. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
+<p class="product-lead">Nate is a programming language that compiles to native executables while keeping code easy to read. Inspired by Go, it brings explicit error recovery and structured concurrency into everyday programming.</p>
 
 <div class="product-actions"><a class="button-primary" href="#hello-world">Write your first program <span aria-hidden="true">→</span></a><a class="button-secondary" href="#errors-and-recovery">See how recovery works <span aria-hidden="true">↗</span></a></div>
 
@@ -251,7 +251,7 @@ close_channel(results)
 </div>
 
 </section>
-<div class="capability-strip" aria-label="Interpreter capabilities"><span>Runs on <strong>macOS &amp; Linux</strong></span><span>Test your code with <code>nate test</code></span><span><strong>12 modules</strong> in the standard library</span></div>
+<div class="capability-strip" aria-label="Language capabilities"><span>Native builds on <strong>macOS &amp; Linux</strong></span><span>Compile with <code>nate build</code></span><span><strong>12 modules</strong> in the standard library</span></div>
 
 <section class="purpose-section" aria-labelledby="why-nate-exists">
 <div class="purpose-intro">
@@ -312,14 +312,14 @@ close_channel(results)
 <div>
 <p class="section-kicker">CURRENT RELEASE</p>
 <h2 id="release-heading">A clear contract for the first release.</h2>
-<p>The 1.0 release candidate targets the tree-walking interpreter. The specifications define the supported language, standard library, and CLI behavior.</p>
+<p>The 1.0 release candidate includes native compilation through C and an interpreter for development. Compile with <code>nate build</code> and run the executable without Nate installed. The specifications define the supported language, standard library, and CLI behavior.</p>
 <div class="release-actions"><a href="#nate-10-scope">Review the 1.0 scope <span aria-hidden="true">→</span></a><a href="#installation">Installation instructions <span aria-hidden="true">→</span></a></div>
 </div>
 <div class="release-facts"><span class="release-tag">1.0.0-rc.1</span>
 <dl>
 <div>
 <dt>Runtime</dt>
-<dd>Interpreter</dd>
+<dd>Native C backend, interpreter</dd>
 </div>
 <div>
 <dt>Platforms</dt>
@@ -337,12 +337,12 @@ close_channel(results)
 </div>
 </section>
 <details class="preview-note"><summary>What is still in preview?</summary>
-<p>VM/AOT, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="#nate-10-scope">release scope</a> before depending on those features.</p>
+<p>The VM, legacy LLVM backend, LSP, packages, async/await, supervision, strict ownership, agents, AI, SQLite, and extended networking remain preview. Read the <a href="#nate-10-scope">release scope</a> before depending on those features.</p>
 </details>
 <footer class="product-footer"><span><strong>Nate</strong> · The language documentation</span><nav aria-label="Footer navigation"><a href="#cli-commands">CLI reference</a><a href="#nate-10-specifications">Specification</a><a href="llms.txt">For AI tools</a></nav></footer>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>Nate’s interpreter builds on macOS and Linux without LLVM. The release candidate
+<p>Nate’s compiler and interpreter build on macOS and Linux without LLVM. The release candidate
 reports <code>nate 1.0.0-rc.1</code>.</p>
 <p>On macOS, install Xcode command-line tools with <code>xcode-select --install</code>.
 On Debian/Ubuntu, install <code>build-essential</code>, <code>git</code>, and <code>libsqlite3-dev</code>:</p>
@@ -353,9 +353,12 @@ cd nate-lang
 make -C src
 ./src/nate --version
 ./src/nate run examples/hello.nate
+./src/nate build examples/native.nate -o native-demo
+./native-demo
 </code></pre>
 <p>Source builds use the library in the checkout. Release archives contain <code>bin/nate</code>
-and <code>share/nate/stdlib</code>; preserve that layout and add the archive’s bin directory
+and <code>share/nate/stdlib</code>, plus <code>include/nate</code> and <code>lib/nate</code> for native compilation;
+preserve that layout and add the archive’s bin directory
 to PATH. The binary resolves its own location, so programs can run from another
 directory. <code>NATE_STDLIB</code> can point to an explicit library directory, including for
 C embedding. Project-local libraries and modules take precedence.</p>
@@ -365,7 +368,11 @@ python3 scripts/conformance.py
 python3 scripts/http_contract.py
 python3 scripts/install_contract.py
 </code></pre>
-<p>LLVM AOT and the bytecode VM are optional preview backends. Their availability
+<p><code>nate build</code> compiles through C with the system compiler (<code>cc</code>, or the executable
+named by <code>NATE_CC</code>). Imported modules and the Nate runtime are bundled, so the
+resulting executable runs without Nate, source files, or the stdlib directory.
+Normal host system libraries still apply.</p>
+<p>The legacy LLVM source and bytecode VM are preview backends. Their availability
 does not imply compatibility with every frozen interpreter feature.</p>
 <p>Next: <a href="#hello-world">Hello world</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -377,6 +384,15 @@ does not imply compatibility with every frozen interpreter feature.</p>
 </code></pre>
 <p>Run <code>nate run hello.nate</code>, or <code>nate hello.nate</code>. Both print just <code>Hello, Nate!</code>
 and a newline. <code>--ast</code> and <code>--verbose</code> opt into compiler diagnostics.</p>
+<p>Compile a native executable to share or deploy the program:</p>
+<pre><code class="language-bash">nate build hello.nate -o hello
+./hello
+</code></pre>
+<p>The build uses your system C compiler. The executable runs without Nate installed
+or the original source file. Nate’s syntax and runtime behavior stay the same.</p>
+<p>The experimental Nate Compiler also accepts <code>--backend=nate</code> for its scalar
+subset, including floats, globals, and guard recovery. Continue with
+<a href="#native-compilation">Native Compilation</a> to choose a backend and inspect compiler output.</p>
 <p>A file may instead contain top-level statements. If it declares main, ordinary
 top-level initialization runs first, followed by a zero-argument main call.
 Functions return nil unless they use return. Main’s returned number does not
@@ -386,6 +402,88 @@ func main() { print(greeting + ", Nate!") }
 </code></pre>
 <p>Run <code>nate</code> for the <a href="#repl">REPL</a>, or continue with
 <a href="#variables-and-constants">variables</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="native-compilation"><a class="header" href="#native-compilation">Native compilation</a></h1>
+<p>Nate builds native executables without changing your program’s syntax. Use the
+default C backend for the full supported language. Choose the experimental Nate
+Compiler to try Nate’s own instruction generation for scalar programs.</p>
+<h2 id="choose-a-backend"><a class="header" href="#choose-a-backend">Choose a backend</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Command</th><th>Compiler</th><th>Language coverage</th></tr>
+</thead>
+<tbody>
+<tr><td><code>nate build program.nate -o program</code></td><td>Portable C backend (default)</td><td>Supported release language, imports, and checked runtime</td></tr>
+<tr><td><code>nate build program.nate --backend=c -o program</code></td><td>Explicit C backend</td><td>Same as the default</td></tr>
+<tr><td><code>nate build program.nate --backend=nate -o program</code></td><td>Nate Compiler (experimental)</td><td>Scalar subset described below</td></tr>
+</tbody>
+</table>
+</div>
+<p>Both produce executables that run without Nate or the source files installed.
+Builds require the host development toolchain. <code>NATE_CC</code> selects the toolchain
+driver executable. The C backend generates C; the Nate Compiler generates ARM64
+or x86-64 assembly and uses the host assembler and linker to package it.</p>
+<h2 id="try-the-nate-compiler"><a class="header" href="#try-the-nate-compiler">Try the Nate Compiler</a></h2>
+<p>Save this complete program as <code>counter.nate</code>:</p>
+<pre><code class="language-nate">const step = 1.5
+counter = 0.0
+
+func increment() {
+    counter = counter + step
+    return counter
+}
+
+func main() {
+    print(increment(), increment(), counter)
+    guard {
+        print(10 / 0)
+    } on error message {
+        print("Calculation failed:", message)
+    }
+    print("Execution continues")
+}
+</code></pre>
+<p>Build and run it:</p>
+<pre><code class="language-sh">nate build counter.nate --backend=nate -o counter
+./counter
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">1.5 3 3
+Calculation failed: division by zero
+Execution continues
+</code></pre>
+<p>Functions can update initialized scalar globals. Reads before initialization and
+writes to constants produce recoverable errors. Parameters shadow globals.
+Guard blocks stop at the first checked failure, bind its message as a string,
+and continue after the handler. Nested handlers and <code>or</code> recovery are supported.</p>
+<h2 id="current-coverage-and-limits"><a class="header" href="#current-coverage-and-limits">Current coverage and limits</a></h2>
+<p>The experimental compiler supports signed 64-bit integers, binary64 floats,
+booleans, nil, string literals, scalar globals and constants, direct function
+calls, conditionals, ordinary loops, <code>break</code>, <code>continue</code>, <code>return</code>, <code>print</code>,
+<code>and</code>, <code>or</code>, and scalar guard recovery. Mixed integer/float arithmetic promotes
+to floats. Integer overflow and division by zero remain checked.</p>
+<p>Types are inferred, but each variable and function parameter has one concrete
+type. Type-changing programs, heap strings, collections, modules, closures,
+Result/Option values, panic statements/hooks, concurrency, and general builtins
+still need the C backend. Unsupported code produces a compile-time diagnostic;
+the compiler does not silently select another backend. Local initialization
+around guards is checked conservatively across success and recovery paths.</p>
+<p>This compiler is experimental. Its current subset does not establish full
+Go/Rust language or performance parity. The C backend remains the default until
+the complete language, security, and ownership checks pass with Nate Compiler.</p>
+<h2 id="inspect-compiler-output"><a class="header" href="#inspect-compiler-output">Inspect compiler output</a></h2>
+<pre><code class="language-sh">nate compiler counter.nate --emit-ir
+nate compiler counter.nate --emit-asm
+nate compiler counter.nate --emit-asm --target=x86_64-linux
+</code></pre>
+<p>Assembly targets are <code>arm64-macos</code>, <code>x86_64-macos</code>, <code>arm64-linux</code>, and
+<code>x86_64-linux</code>. Normal builds target your host. Emitting assembly for another
+target does not supply a cross-linker or that target’s runtime archive.</p>
+<p>Read the <a href="#nate-compiler">Nate Compiler specification</a> for
+initialization, recovery, ABI, resource limits, and promotion gates, and the
+<a href="#native-compilation-1">native compilation contract</a> for the
+default backend’s deployment and security behavior.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="repl"><a class="header" href="#repl">REPL</a></h1>
 <p>Run <code>nate</code> or <code>nate repl</code>. Enter an expression to see its result. Definitions
@@ -1303,7 +1401,7 @@ func transfer(from, to, amount) {
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="capabilities-taint-and-scoped-execution"><a class="header" href="#capabilities-taint-and-scoped-execution">Capabilities, taint, and scoped execution</a></h1>
-<p>Status: frozen for the tree-walking interpreter. VM and AOT are preview.</p>
+<p>Status: frozen for the interpreter and native C backend. VM and legacy LLVM are preview.</p>
 <h2 id="capabilities"><a class="header" href="#capabilities">Capabilities</a></h2>
 <p>Capability names are <code>file_read</code>, <code>file_write</code>, <code>network</code>, <code>env</code>, <code>exec</code>,
 and <code>unsafe</code>. Unknown names and non-string arguments return errors.
@@ -1546,7 +1644,7 @@ runtime/capabilities-and-taint.md.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="cli-commands"><a class="header" href="#cli-commands">CLI commands</a></h1>
 <p>The 1.0 interpreter commands are <code>nate</code>, <code>nate repl</code>, <code>nate run file.nate</code>,
-<code>nate test [path]</code>, <code>nate bench [path]</code>, <code>nate doc file.nate</code>, <code>--version</code>,
+<code>nate build file.nate [-o output]</code>, <code>nate test [path]</code>, <code>nate bench [path]</code>, <code>nate doc file.nate</code>, <code>--version</code>,
 and <code>--help</code>. With no arguments Nate starts the REPL; a filename runs it.</p>
 <p>Run is quiet by default. <code>--ast</code> and <code>--verbose</code> enable diagnostics.
 Run exits 0 on success, 1 on a runtime failure, 2 on parse/analysis failure,
@@ -1556,7 +1654,23 @@ fails; benchmark errors are not reported as successful measurements.</p>
 <code>bench_*</code> functions in <code>*_bench.nate</code> files. Both default to the current
 directory and inspect its immediate files. Doc prints comments and signatures.
 The REPL accepts <code>:help</code>, <code>:quit</code>, and <code>:clear</code>.</p>
-<p>VM (<code>run --vm</code>), LLVM (<code>build</code>), LSP, and package commands are preview.
+<p>Build compiles a native executable through the host C compiler; set <code>NATE_CC</code>
+to select a compiler executable. The result bundles imported modules and runs
+without Nate or the source files. Builds return 2 for compilation failures and
+3 for invalid arguments or a missing root source. Output defaults to the source
+name with its final <code>.nate</code> suffix removed, or with <code>.out</code> appended otherwise.</p>
+<p><code>nate build file.nate --backend=c</code> explicitly selects the default portable C
+backend. <code>--backend=nate</code> selects the experimental Nate Compiler, which emits
+ARM64/x86-64 instructions for its supported scalar subset: integers, floats,
+booleans, nil, string literals, scalar globals, direct calls, ordinary control
+flow, and guard recovery. Unsupported features produce a diagnostic.</p>
+<p>Inspect the experimental compiler with <code>nate compiler file.nate --emit-ir</code> or
+<code>--emit-asm</code>. Assembly inspection accepts <code>--target=arm64-macos</code>,
+<code>--target=x86_64-macos</code>, <code>--target=arm64-linux</code>, or <code>--target=x86_64-linux</code>.
+These targets do not configure cross-linking for <code>nate build</code>.
+See <a href="#native-compilation">Native Compilation</a> for a complete example
+and current limitations.</p>
+<p>VM (<code>run --vm</code>), legacy LLVM source, LSP, and package commands are preview.
 NATE_STDLIB sets an explicit standard-library directory. NATE_PATH and
 NATE_DEBUG are not supported configuration contracts.</p>
 <p>See the <a href="#cli">normative CLI specification</a>.</p>
@@ -1590,6 +1704,8 @@ A spec with no conformance test is not frozen.</p>
   1.0-scope.md              What is in, preview, and out
   versioning.md             1.0.0 and compatibility promises
   compatibility.md          Interpreter vs VM vs LLVM
+  native-compilation.md     Native builds, toolchain, and deployment
+  nate-compiler.md          Owned typed compiler and machine code roadmap
   conformance.md            How tests prove the spec
   cli.md                    Frozen CLI
   language/                 Language semantics
@@ -1630,8 +1746,8 @@ and <code>close_channel</code>, not <code>channel_create</code>.</li>
 <li><code>examples/*.nate</code> for intended usage</li>
 <li><code>stdlib/*.nate</code> for module APIs</li>
 </ul>
-<p>The tree-walking interpreter is the 1.0 runtime. The bytecode VM and
-LLVM backend are preview until <code>compatibility.md</code> says otherwise.</p>
+<p>Native C executables and the tree-walking interpreter implement the 1.0 language.
+The bytecode VM and legacy LLVM backend remain preview.</p>
 <h2 id="related-docs"><a class="header" href="#related-docs">Related docs</a></h2>
 <ul>
 <li><a href="#nate-10-scope">1.0 scope</a></li>
@@ -1643,8 +1759,10 @@ LLVM backend are preview until <code>compatibility.md</code> says otherwise.</p>
 <p>Nate 1.0 is a beginner-friendly language for scripts, CLI tools, small
 servers, and learning. It should feel as easy as Go, with safer defaults
 and a smaller surface.</p>
-<p>The interpreter is the product. The bytecode VM and LLVM backend are
-faster paths, documented as preview until they match the frozen spec.</p>
+<p>Native executables are the distribution path. <code>nate build</code> lowers Nate to C and
+uses the host compiler to emit machine code. <code>nate run</code> and the REPL retain the
+interpreter for development. Both implement the frozen language; the bytecode VM
+and legacy LLVM backend remain preview.</p>
 <p>Current candidate: <code>v1.0.0-rc.1</code>. Stable target: <code>v1.0.0</code>.
 All language sections and the listed module contracts are frozen for candidate
 validation. <code>release.json</code> pins public exports and arities; <code>release_audit.py</code>
@@ -1657,6 +1775,7 @@ checks the inventory against source, specs, and executable test references.</p>
 <li>Write, run, test, and document <code>.nate</code> files.</li>
 <li>Use the frozen language, stdlib, and CLI without surprises.</li>
 <li>Read a language spec that matches the implementation.</li>
+<li>Compile a standalone native executable with <code>nate build</code>, using a host C compiler.</li>
 </ol>
 <p>A user cannot expect Sail, a package registry, GPU, WASM, mobile,
 self-hosting, or a production AI agent platform.</p>
@@ -1691,6 +1810,7 @@ preview even if the C builtins exist.</p>
 <h2 id="frozen-cli"><a class="header" href="#frozen-cli">Frozen CLI</a></h2>
 <pre><code>nate                 REPL
 nate run &lt;file&gt;      Run a file. No AST dump by default.
+nate build &lt;file&gt; [-o output]  Build a native executable.
 nate test [path]     Discover and run test_* functions
 nate bench [path]    Discover and run bench_* functions
 nate doc &lt;file&gt;      Text docs. HTML optional.
@@ -1701,7 +1821,7 @@ nate --help          Lists frozen commands
 <p>Ships in the tree. Not a compatibility promise. May change.</p>
 <ul>
 <li>Bytecode VM: <code>nate run --vm</code></li>
-<li>LLVM AOT: <code>nate build</code></li>
+<li>Legacy LLVM backend source (the supported <code>nate build</code> backend is C)</li>
 <li>LSP: <code>nate lsp</code></li>
 <li>Packages: <code>nate init</code>, <code>get</code>, <code>lock</code>, <code>install</code></li>
 <li><code>async</code> / <code>await</code></li>
@@ -1731,8 +1851,8 @@ nate --help          Lists frozen commands
 <li>The tree-walking interpreter implements the frozen spec.</li>
 <li>VM may be preview. Every frozen example it claims to run must match
 interpreter output.</li>
-<li>AOT may be preview. Document missing builtins. Do not imply C-level
-completeness.</li>
+<li>Native C builds must pass the same frozen conformance tests. See
+<a href="#native-compilation-1">native-compilation.md</a> for the build and runtime contract.</li>
 <li><code>scripts/vm_parity_audit.py</code> is a release gate for the frozen set.</li>
 </ol>
 <p>If a frozen feature works in the interpreter and fails in the VM, either
@@ -1784,6 +1904,11 @@ file, same as <code>nate run &lt;file&gt;</code>.</p>
 <p><strong><code>nate test [path]</code></strong></p>
 <p>Default path is <code>.</code>. Discovers <code>test_*</code> functions in <code>*_test.nate</code>
 files, or in the given file. Exit 0 if all pass.</p>
+<p><strong><code>nate build &lt;file.nate&gt; [-o output]</code></strong></p>
+<p>Compile to a native executable through the system C compiler. LLVM is not
+required. Imports are bundled at build time. The output runs without Nate or
+source files. See <a href="#native-compilation-1">native-compilation.md</a> for toolchain,
+installation, output naming, and error behavior. <code>NATE_CC</code> selects the compiler.</p>
 <p><strong><code>nate bench [path]</code></strong></p>
 <p>Default path is <code>.</code>. Discovers <code>bench_*</code> functions. Auto-calibrates
 toward about one second per benchmark.</p>
@@ -1812,24 +1937,29 @@ go to stderr. Program output goes to stdout.</p>
 <li>No banner is printed outside the REPL.</li>
 <li><code>nate run --vm</code> is rejected with a clear message if the binary was
 built without <code>NATE_VM</code>.</li>
-<li><code>nate build</code> is rejected with a clear message if built without LLVM.</li>
+<li><code>nate build</code> is included by default and reports missing host compiler or
+development files as build errors.</li>
 <li>Exit codes match the table above.</li>
 </ol>
 <p>The version string is <code>NATE_VERSION</code> in <code>src/commands.h</code>. It stays
 <code>1.0.0-rc.1</code> for the candidate and becomes <code>1.0.0</code> for the stable tag.</p>
 <h2 id="preview-commands"><a class="header" href="#preview-commands">Preview commands</a></h2>
 <p>Not a 1.0 compatibility promise:</p>
-<pre><code>nate build &lt;file.nate&gt; [-o output]
-nate lsp
+<pre><code>nate lsp
+nate build &lt;file.nate&gt; --backend=nate [-o output]
+nate compiler &lt;file.nate&gt; --emit-ir|--emit-asm [--target=target]
 nate init [name]
 nate get &lt;package&gt;
 nate lock
 nate install
 </code></pre>
-<p><code>nate build</code> requires an LLVM-enabled binary. Native compilation is
-preview. See GitHub issue #68.</p>
+<p>The legacy LLVM backend is experimental source; <code>nate build</code> uses the C backend.
+The experimental Nate compiler is selected explicitly with <code>--backend=nate</code>.
+<code>--backend=c</code> selects the default. See <a href="#nate-compiler">nate-compiler.md</a> for
+the scalar subset, assembly targets, diagnostics, and promotion gates.</p>
 <h2 id="environment"><a class="header" href="#environment">Environment</a></h2>
 <pre><code>NATE_STDLIB  Explicit host standard-library directory
+NATE_CC      Host C compiler executable for nate build (default: cc)
 </code></pre>
 <p>NATE_STDLIB is tested by <code>scripts/install_contract.py</code>. NATE_PATH and
 NATE_DEBUG are not implemented or frozen.</p>
@@ -1845,16 +1975,21 @@ Oversized input is rejected, not executed in fragments. Tokenized delimiters
 permit multiline arrays, calls, and blocks without counting quoted braces.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="runtime-compatibility"><a class="header" href="#runtime-compatibility">Runtime Compatibility</a></h1>
-<p>Nate 1.0 has three execution paths. Only one is the language.</p>
-<pre><code>┌──────────────────────────┬──────────┬─────────────────────────┐
-│ Runtime                  │ 1.0 role │ Command                 │
-├──────────────────────────┼──────────┼─────────────────────────┤
-│ Tree-walking interpreter │ Source of│ nate run file.nate      │
-│                          │ truth    │                         │
-│ Bytecode VM              │ Preview  │ nate run file.nate --vm │
-│ LLVM AOT                 │ Preview  │ nate build file.nate    │
-└──────────────────────────┴──────────┴─────────────────────────┘
-</code></pre>
+<p>Nate supports native C compilation and interpreted development. Both implement
+the frozen language.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Runtime</th><th>Role</th><th>Command</th></tr>
+</thead>
+<tbody>
+<tr><td>Native C backend</td><td>Supported native executables</td><td><code>nate build file.nate</code></td></tr>
+<tr><td>Tree-walking interpreter</td><td>Reference implementation</td><td><code>nate run file.nate</code></td></tr>
+<tr><td>Bytecode VM</td><td>Preview</td><td><code>nate run file.nate --vm</code></td></tr>
+<tr><td>Legacy LLVM backend</td><td>Experimental source</td><td>Development only</td></tr>
+</tbody>
+</table>
+</div>
 <p>If these disagree, the interpreter is correct. The other runtime is a
 bug or an advertised limitation.</p>
 <h2 id="interpreter"><a class="header" href="#interpreter">Interpreter</a></h2>
@@ -1876,15 +2011,18 @@ in a VM known-issues section. Do not fail silently.</li>
 </ol>
 <p>Known-issues belong in this file as they are discovered. Do not hide
 them in issue comments.</p>
-<h2 id="llvm-aot"><a class="header" href="#llvm-aot">LLVM AOT</a></h2>
-<p><code>nate build</code> emits a native binary. It requires a Nate build with LLVM.</p>
-<p>Rules for 1.0:</p>
-<ol>
-<li>AOT is preview. Install docs must not require LLVM to run Nate.</li>
-<li>Document missing builtins instead of implying C-level completeness.</li>
-<li>GitHub issue #68 remains open until AOT has its own freeze spec.</li>
-<li><code>make</code> must still produce a working interpreter without LLVM.</li>
-</ol>
+<h2 id="native-c-backend"><a class="header" href="#native-c-backend">Native C backend</a></h2>
+<p><code>nate build</code> compiles ahead of time through C and links the checked Nate runtime.
+It needs a system C compiler at build time and no LLVM installation. Executables
+bundle imports and run without Nate or source files. All frozen conformance test
+functions run natively through <code>scripts/native_suite.py</code>. Build and deployment
+semantics are specified in <a href="#native-compilation-1">native-compilation.md</a>.</p>
+<p>Missing, circular, or invalid imports fail at build time. This intentionally
+moves those failures earlier than <code>nate run</code>. Negative program checks distinguish
+build errors from errors raised by an executable. Timing and thread ordering
+are not compatibility guarantees.</p>
+<p>The old LLVM code generator remains experimental source in <code>src/compiler/</code>.
+It is not the backend used by <code>nate build</code>.</p>
 <h2 id="parity-definition"><a class="header" href="#parity-definition">Parity definition</a></h2>
 <p>Two runs match when:</p>
 <ul>
@@ -1896,7 +2034,7 @@ analysis, or runtime.</li>
 <p>Timing, thread interleaving, and map iteration order are not required
 to match unless a test pins them.</p>
 <h2 id="analysis-vs-execution"><a class="header" href="#analysis-vs-execution">Analysis vs execution</a></h2>
-<p>Static analysis in <code>src/analyzer*.c</code> runs before the interpreter.
+<p>Static analysis in <code>src/analyzer*.c</code> runs before interpretation or native compilation.
 Data-race errors and ownership errors that reject a program are part
 of the language if they are frozen.</p>
 <p>The VM path currently skips some of that pipeline. Until it does not,
@@ -1915,7 +2053,7 @@ language spec, not discovered by users.</li>
 and does not implement guard or scoped capability callbacks. Direct interface
 assertions, module export isolation, and interpreter memory ownership are not
 VM compatibility promises. Its parity audit is informational and may fail.
-LLVM AOT requires an LLVM-enabled build and has incomplete builtin coverage.
+Legacy LLVM AOT requires LLVM development files and has incomplete builtin coverage.
 Neither backend is promoted by a candidate or stable interpreter tag.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="conformance"><a class="header" href="#conformance">Conformance</a></h1>
@@ -2011,8 +2149,11 @@ resources and all other CLI paths are not covered by a complete leak audit.</p>
 </ul>
 <p>A negative test passes when the process exits non-zero for the documented
 reason: parse, analysis, or runtime.</p>
-<h2 id="interpreter-first"><a class="header" href="#interpreter-first">Interpreter first</a></h2>
+<h2 id="interpreter-and-native-compilation"><a class="header" href="#interpreter-and-native-compilation">Interpreter and native compilation</a></h2>
 <p>Conformance runs on the tree-walking interpreter.
+<code>python3 scripts/native_suite.py</code> compiles every conformance test function into
+native executables. <code>python3 scripts/native_contract.py</code> verifies standalone
+execution, negative programs, build errors, and deployment safety. Both are CI gates.
 VM and LLVM results are informational until
 <a href="#runtime-compatibility">compatibility.md</a> promotes them.</p>
 <h2 id="not-conformance"><a class="header" href="#not-conformance">Not conformance</a></h2>
@@ -2209,6 +2350,9 @@ and <code>tests/conformance/safety_test.nate</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="statements"><a class="header" href="#statements">Statements</a></h1>
 <p>Status: frozen for the 1.0 interpreter.</p>
+<p>Native C builds implement the same control flow. Errors in a three-clause loop’s
+initializer, condition, body, or post statement propagate to <code>or</code>/<code>guard</code> or the
+program boundary; they are never discarded.</p>
 <p>Assignment uses <code>name = expression</code>. It updates an existing binding in the
 scope chain, or creates one in the current scope. <code>const name = expression</code>
 creates a binding that ordinary assignment cannot change. Redefining declarations
@@ -2584,9 +2728,9 @@ Interfaces are exported by the same capitalized-name rule.</p>
 <code>tests/negative/missing_module.nate</code>, <code>tests/negative/private_import.nate</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="memory-and-gc"><a class="header" href="#memory-and-gc">Memory and GC</a></h1>
-<p>Status: frozen for the 1.0 interpreter. Implementation in <code>src/interp_gc.c</code> and
+<p>Status: frozen for the interpreter and native C backend. Implementation in <code>src/interp_gc.c</code> and
 <a href="#runtime-safety">runtime/safety.md</a>.</p>
-<p>Frozen 1.0 memory is the interpreter GC. LLVM AOT and the bytecode VM
+<p>Frozen 1.0 memory uses the shared runtime GC. Legacy LLVM AOT and the bytecode VM
 are preview. Their allocators are not a 1.0 promise.</p>
 <h2 id="guarantees"><a class="header" href="#guarantees">Guarantees</a></h2>
 <ul>
@@ -2643,8 +2787,207 @@ the shared environment.</p>
 <p>Text and closure ownership checks: <code>tests/conformance/runtime_memory_test.nate</code>,
 <code>tests/security/runtime_memory.c</code>, and <code>make -C src test-runtime-memory</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="nate-compiler"><a class="header" href="#nate-compiler">Nate Compiler</a></h1>
+<p>Status: experimental compiler implementation; the default C backend remains the
+compatibility path until the compiler passes the complete frozen language suite.</p>
+<p>The goal is a Nate-owned compiler pipeline with inferred types, native data
+representations, optimization, and machine code generation. Nate keeps its
+readable syntax. This work does not introduce Rust’s ownership syntax or change
+the frozen language’s dynamic behavior.</p>
+<pre><code>Nate source -&gt; parser -&gt; type constraints -&gt; typed IR -&gt; verification
+            -&gt; checked constant folding -&gt; instruction selection
+            -&gt; ARM64 / x86-64 assembly -&gt; assembler + linker -&gt; executable
+</code></pre>
+<p>The implementation is in <code>src/compiler/nate_*.c</code>. It is independent of both the
+bootstrap C emitter and the old LLVM backend. It is initially written in C;
+self-hosting is a later project, not a prerequisite for owning the compiler.</p>
+<h2 id="using-the-experimental-compiler"><a class="header" href="#using-the-experimental-compiler">Using the experimental compiler</a></h2>
+<pre><code>nate build examples/compiler.nate --backend=nate -o compiler-demo
+./compiler-demo
+nate compiler examples/compiler.nate --emit-ir
+nate compiler examples/compiler.nate --emit-asm
+nate compiler examples/compiler.nate --emit-asm --target=x86_64-linux
+</code></pre>
+<p><code>--backend=c</code> explicitly selects the existing backend and remains the default.
+<code>--backend=nate</code> never silently falls back to C. Unsupported features produce a
+compile-time diagnostic. The host toolchain driver selected by <code>NATE_CC</code> invokes
+the assembler and linker; no generated C or LLVM is involved in this path.
+Object-file emission and removal of the host driver are follow-up work.</p>
+<p>Normal builds target the host. Assembly inspection also accepts <code>arm64-macos</code>,
+<code>x86_64-macos</code>, <code>arm64-linux</code>, and <code>x86_64-linux</code>. Emitting assembly for another
+target does not provide that target’s runtime archive or a cross-linker.</p>
+<h2 id="implemented-scalar-core"><a class="header" href="#implemented-scalar-core">Implemented scalar core</a></h2>
+<ul>
+<li>Signed 64-bit integers, IEEE binary64 floats, booleans, nil, and immutable string literals.</li>
+<li>Type inference across function arguments, returns, locals, globals, forward calls,
+and mutual recursion. No type annotations are required.</li>
+<li>Direct calls with up to 64 scalar arguments; monomorphic function signatures.</li>
+<li>Local variables, top-level constants, checked scalar globals, blocks, <code>if</code>, condition
+loops and three-clause loops, <code>break</code>, <code>continue</code>, and <code>return</code>.</li>
+<li>Checked integer arithmetic, native float arithmetic, mixed numeric comparisons,
+negation, <code>not</code>, short-circuit <code>and</code>,
+and scalar/error <code>or</code> fallback. String/nil equality and condition semantics
+retain the supported scalar language behavior.</li>
+<li>Deferred numeric constraints infer integer/float operands independently, then
+promote mixed arithmetic to binary64. Function signatures remain monomorphic.
+Floating zero is truthy and preserved by <code>or</code>; division by either signed zero
+raises an error. Float remainder raises the interpreter’s invalid-operands error.
+Ordered NaN comparisons are false, while NaN inequality is true.</li>
+<li><code>print</code>, including left-to-right evaluation, nested output, and partial output
+when an argument fails.</li>
+<li>Explicit error edges in IR, a two-word value/error return ABI, source-position
+diagnostics, and bounded native stack/call depth.</li>
+<li>Guard blocks for checked scalar failures, optional message bindings, nested
+handlers, and ordinary return/break/continue control flow.</li>
+</ul>
+<p>Values and locals have concrete native representations. Floating operations use
+ARM64 floating-point instructions or x86-64 SSE2. The internal direct-call ABI
+passes 64-bit float bit patterns in the same general-purpose registers/stack slots
+as other scalar values and returns the value bits alongside the error pointer.
+No boxed-value conversion is needed at calls. The executable links
+only <code>libnate_compiler_rt.a</code>, a small I/O/diagnostic/stack-guard runtime. It contains
+no AST evaluator, boxed <code>Value</code>, environment lookup, SQLite, or interpreter GC.
+This scalar core needs no runtime heap allocation for language values; string
+literals live in static data.</p>
+<p>Globals have a scalar payload, an initialized flag, and a constant flag in writable
+static data. Top-level constants initialize first in declaration order; ordinary
+top-level statements then run in source order, followed by <code>main()</code>. An uninitialized
+read returns the interpreter’s undefined-variable error, including its source
+position. Constant reassignment also returns an error; both support <code>or</code> recovery.
+No environment allocation or runtime name lookup is required.</p>
+<p>Function assignments update a global when it already exists. Before that global
+is initialized, assignment creates a local fallback for that invocation. Reads
+prefer that local fallback, then the initialized global, and otherwise fail.
+Each such binding has a stack flag cleared on entry, so one call cannot leak a
+local into another. Parameters shadow globals and may have independent types.
+Other global/fallback payloads share one inferred type. Function-name rebinding
+and type-changing global assignments require the C backend.</p>
+<p><code>guard { ... } on error message { ... }</code> routes checked scalar failures to a
+recovery block. The optional binding is an ordinary string containing the error
+message without its source prefix. It is defined in the current invocation (or
+at global scope for a top-level guard), matching interpreter <code>env_define</code> rules.
+Top-level handler bindings clear an existing constant flag. Strings refer to
+static runtime/compiler diagnostics, so recovery needs no heap allocation.
+The handler’s own failures propagate to the surrounding guard or caller.
+Success skips the handler; side effects before failure remain visible.</p>
+<p>Return expressions retain the interpreter’s special rule: if evaluating a return
+operand fails, that error leaves the function and bypasses guards in that function.
+An explicit <code>or</code> inside the return expression can still recover it. Successful
+returns, breaks, and continues also bypass the handler. Local initialization after
+a guard is checked conservatively across success and recovery paths; initialize
+locals before the guard when both paths need them. Handler bindings that would
+change a local/global’s inferred type require <code>--backend=c</code>.</p>
+<p>The IR is typed three-address code with explicit blocks and mutable local slots.
+It is not SSA yet. The verifier checks block structure, value definitions, slot
+references, call arity, type consistency, and error targets. Error-message capture
+must begin a recovery block that ordinary branches cannot enter. Constant folding
+preserves integer overflow and division errors. The initial register assignment
+spills virtual values to the stack; register allocation remains a major next step.</p>
+<p>Current limits include 1,024 globals, 256 locals, 3,500 intermediate values, a 32 KiB frame per
+function, and 512 native calls, with a separate native stack-headroom guard.
+Unrecoverable stack exhaustion becomes an error, rather than an unchecked crash.</p>
+<h2 id="remaining-language-coverage"><a class="header" href="#remaining-language-coverage">Remaining language coverage</a></h2>
+<p>Heap strings, collections, structs, interfaces, enums, pattern matching,
+closures, modules, Result/Option values, panic statements/hooks, concurrency, general builtins,
+and polymorphic or changing variable types still require <code>--backend=c</code>.
+Some otherwise valid scalar programs require it too: the first type solver uses
+one type per local/function parameter and conservatively checks initialization.
+Mixed return types and partial returns cannot yet be represented.</p>
+<p>Heap features need typed layout and precise GC roots/stack maps before promotion.
+They must preserve bounds checks, taint/capabilities, errors, and structured task
+semantics. Native instruction generation alone is not a safety or speed proof.</p>
+<h2 id="promotion-and-performance-gates"><a class="header" href="#promotion-and-performance-gates">Promotion and performance gates</a></h2>
+<ol>
+<li>Complete typed/dynamic IR coverage for every frozen language construct.</li>
+<li>Add SSA/liveness, register allocation, escape analysis, inlining, and proven
+bounds-check elimination, each with regressions and measurable evidence.</li>
+<li>Add native object writers and target runtime packaging.</li>
+<li>Pass all frozen conformance, negative, security, ownership, deployment, and
+sanitizer checks with the Nate backend. Only then change the default backend.</li>
+<li>Compare runtime, memory, startup, binary size, and compile time with equivalent
+Go/Rust programs across multiple workloads and architectures. Preserve the
+specified safety behavior when comparing results.</li>
+</ol>
+<p><code>scripts/compiler_contract.py</code> checks execution, integer boundary/error cases,
+type diagnostics, direct calls, standalone deployment, absence of interpreter
+symbols, and assembly/object validity for all four target formats when Clang is
+available. On ARM64 macOS with Rosetta already installed, it also executes the
+generated x86-64 integer, float, and global-storage programs against the interpreter reference.
+CI configuration includes native execution on macOS ARM64 and Linux x86-64 hosts.</p>
+<p><code>python3 scripts/compiler_bench.py --n 28 --runs 3</code> supplies an initial recursive
+integer baseline against the bootstrap backend, interpreter, and installed
+Rust/Go compilers. It includes process startup, prints build and median run time,
+and validates equal results. One workload does not establish general parity.</p>
+<p>GitHub is being decommissioned, with Axon planned as its replacement. The workflow
+uses local branches, verified commits, and local merges while Axon is being
+prepared. GitHub issues, project-board updates, PRs, remote merges, and pushes
+are not required or performed unless the user explicitly requests them.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="native-compilation-1"><a class="header" href="#native-compilation-1">Native compilation</a></h1>
+<p>Status: supported candidate surface. <code>nate build</code> is included in normal builds.</p>
+<p>This contract describes the default C backend. The independent, experimental
+Nate compiler is selected with <code>--backend=nate</code>; its current subset and target
+pipeline are described in <a href="#nate-compiler">nate-compiler.md</a>.</p>
+<pre><code>nate build program.nate
+nate build program.nate -o application
+./application
+</code></pre>
+<p>Without <code>-o</code>, the final <code>.nate</code> suffix is removed. A source without that suffix
+gets <code>.out</code> appended. Unknown options, repeated <code>-o</code>, and missing arguments fail
+with exit 3. A missing root source also exits 3. Parse, analysis, import,
+code-generation, and host compiler failures exit 2. A successful build exits 0
+and reports the output path on stderr. A failed build preserves an existing
+executable. Output cannot overwrite the root source or any imported source,
+including aliases of those files.</p>
+<h2 id="compilation-and-execution"><a class="header" href="#compilation-and-execution">Compilation and execution</a></h2>
+<p>The C backend parses and analyzes source at build time, recursively resolves
+imports, and emits C functions for expressions, functions, initialization,
+blocks, branches, loops, switches, matches, guards, and recovery. Dynamic calls
+use native callbacks. Static metadata supplies signatures, patterns, fields,
+and source locations to shared runtime operations. The host compiler optimizes
+this C and links the Nate runtime into an executable for the current host.
+There is no runtime source parsing, bytecode VM, or invocation of <code>nate run</code>.</p>
+<p>The checked runtime is shared with the interpreter: dynamic values, integer
+overflow and bounds errors, taint, capabilities, captured environments, GC,
+panic containment, channels, and structured task joins retain their language
+semantics. The interpreter remains a reference implementation. This backend
+does not introduce static types, ownership/borrowing, or a Rust performance
+guarantee. Memory collection retains the limits in
+<a href="#memory-and-gc">13-memory-and-gc.md</a>.</p>
+<p>Imported modules are compiled into the executable, including private helpers,
+module environments, cached exports, and constant initialization. Missing,
+invalid, or circular imports fail during compilation. Import capability checks
+still apply when executing compiled module initialization. Changing an imported
+source or <code>NATE_STDLIB</code> after compilation does not change an executable.</p>
+<p><code>main()</code> runs after top-level initialization and must have zero arguments.
+Its numeric result does not set the process exit code, matching <code>nate run</code>.
+The executable exits 0 on success and 1 on an uncaught runtime error. Diagnostics
+retain Nate line and column locations. A top-level panic handler runs once,
+after which the executable ends.</p>
+<h2 id="toolchain-and-installation"><a class="header" href="#toolchain-and-installation">Toolchain and installation</a></h2>
+<p>Builds require a C11 compiler and host development libraries (pthread, SQLite,
+and math). <code>NATE_CC</code> selects a compiler executable; its value is a path or program
+name, not a shell command or list of flags. It defaults to <code>cc</code>. Source and
+output paths are passed as process arguments, including spaces and metacharacters.
+Builds use private temporary files and publish a completed executable atomically.</p>
+<p>Source builds include <code>src/native/libnate_native.a</code>. Installed builds resolve
+<code>include/nate</code> and <code>lib/nate/libnate_native.a</code> relative to <code>bin/nate</code>. These
+development files and the stdlib are required on the build machine. The resulting
+executable needs none of them, nor a Nate installation. It still depends on normal
+host system libraries, including SQLite. Cross-compilation, a portable binary
+format, and a stable native ABI are outside this contract.</p>
+<p>The legacy LLVM backend remains experimental source. The VM and language features
+classified as preview in <code>release.json</code> retain their preview status.</p>
+<h2 id="validation"><a class="header" href="#validation">Validation</a></h2>
+<p><code>python3 scripts/native_suite.py</code> compiles and runs the conformance test functions.
+<code>python3 scripts/native_contract.py</code> covers compatibility fixtures, runtime
+errors, negative programs, source deletion, hostile paths, output preservation,
+and compiler failures. Installation and archive tests build outside the checkout,
+remove the development files, and run the resulting executable. CI runs native
+checks on macOS and Linux, including address/undefined-behavior sanitizer builds.</p>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="capabilities-taint-and-scoped-execution-1"><a class="header" href="#capabilities-taint-and-scoped-execution-1">Capabilities, taint, and scoped execution</a></h1>
-<p>Status: frozen for the tree-walking interpreter. VM and AOT are preview.</p>
+<p>Status: frozen for the interpreter and native C backend. VM and legacy LLVM are preview.</p>
 <h2 id="capabilities-1"><a class="header" href="#capabilities-1">Capabilities</a></h2>
 <p>Capability names are <code>file_read</code>, <code>file_write</code>, <code>network</code>, <code>env</code>, <code>exec</code>,
 and <code>unsafe</code>. Unknown names and non-string arguments return errors.
@@ -2719,7 +3062,7 @@ tags already stored on individual elements.</p>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="runtime-safety"><a class="header" href="#runtime-safety">Runtime Safety</a></h1>
-<p>Status: frozen for the 1.0 interpreter.</p>
+<p>Status: frozen for the interpreter and native C backend.</p>
 <p>Nate 1.0 is safe by default. The interpreter must not produce undefined
 behavior for frozen programs.</p>
 <h2 id="guarantees-1"><a class="header" href="#guarantees-1">Guarantees</a></h2>
@@ -2748,7 +3091,7 @@ explicit taint removal alias, not an input validator.</p>
 <h2 id="race-detection"><a class="header" href="#race-detection">Race detection</a></h2>
 <p>The analyzer rejects some unsynchronized shared writes across <code>spawn</code>.
 Rejected programs are illegal, not runtime lotteries.</p>
-<p>This applies to the interpreter path. VM parity is preview. See
+<p>This applies to the interpreter and native C paths. VM parity is preview. See
 <a href="#runtime-compatibility">compatibility.md</a>.</p>
 <h2 id="not-frozen"><a class="header" href="#not-frozen">Not frozen</a></h2>
 <ul>
@@ -3364,7 +3707,7 @@ specified in this directory.</p>
 <code>or</code>, changing <code>spawn</code> to require a different form, making <code>nil</code> truthy.</p>
 <p><strong>Stdlib (frozen public API).</strong> Removing or renaming a documented
 function requires 2.0. Adding a function is a minor release.</p>
-<p><strong>CLI (frozen commands).</strong> <code>run</code>, <code>test</code>, <code>bench</code>, <code>doc</code>, <code>--version</code>,
+<p><strong>CLI (frozen commands).</strong> <code>run</code>, <code>build</code>, <code>test</code>, <code>bench</code>, <code>doc</code>, <code>--version</code>,
 and <code>--help</code> keep their meaning. New flags are minor. Removing a frozen
 flag is major.</p>
 <p><strong>Preview.</strong> VM, LLVM, LSP, packages, async, supervise, move, contracts,
@@ -3389,8 +3732,9 @@ A preview flag may disappear in 1.x.</p>
 <li>Making a preview feature frozen without a minor release that says so</li>
 </ul>
 <h2 id="interpreter-vs-other-runtimes"><a class="header" href="#interpreter-vs-other-runtimes">Interpreter vs other runtimes</a></h2>
-<p>The version number describes the language and the interpreter.</p>
-<p><code>nate run --vm</code> and <code>nate build</code> are preview. A VM or AOT mismatch is
+<p>The version number describes the language, interpreter, and native C backend.</p>
+<p><code>nate build</code> uses the supported C backend. The VM and legacy LLVM backend are
+preview. A VM or legacy LLVM mismatch is
 not a 1.0 language bug unless <a href="#runtime-compatibility">compatibility.md</a>
 has already promoted that runtime.</p>
 <h2 id="command-output"><a class="header" href="#command-output">Command output</a></h2>

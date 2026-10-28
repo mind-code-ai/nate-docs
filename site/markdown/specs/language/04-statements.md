@@ -4,6 +4,10 @@
 
 Status: frozen for the 1.0 interpreter.
 
+Native C builds implement the same control flow. Errors in a three-clause loop's
+initializer, condition, body, or post statement propagate to `or`/`guard` or the
+program boundary; they are never discarded.
+
 Assignment uses `name = expression`. It updates an existing binding in the
 scope chain, or creates one in the current scope. `const name = expression`
 creates a binding that ordinary assignment cannot change. Redefining declarations

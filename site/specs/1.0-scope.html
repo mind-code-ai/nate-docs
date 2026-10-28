@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -189,8 +189,10 @@
 <p>Nate 1.0 is a beginner-friendly language for scripts, CLI tools, small
 servers, and learning. It should feel as easy as Go, with safer defaults
 and a smaller surface.</p>
-<p>The interpreter is the product. The bytecode VM and LLVM backend are
-faster paths, documented as preview until they match the frozen spec.</p>
+<p>Native executables are the distribution path. <code>nate build</code> lowers Nate to C and
+uses the host compiler to emit machine code. <code>nate run</code> and the REPL retain the
+interpreter for development. Both implement the frozen language; the bytecode VM
+and legacy LLVM backend remain preview.</p>
 <p>Current candidate: <code>v1.0.0-rc.1</code>. Stable target: <code>v1.0.0</code>.
 All language sections and the listed module contracts are frozen for candidate
 validation. <code>release.json</code> pins public exports and arities; <code>release_audit.py</code>
@@ -203,6 +205,7 @@ checks the inventory against source, specs, and executable test references.</p>
 <li>Write, run, test, and document <code>.nate</code> files.</li>
 <li>Use the frozen language, stdlib, and CLI without surprises.</li>
 <li>Read a language spec that matches the implementation.</li>
+<li>Compile a standalone native executable with <code>nate build</code>, using a host C compiler.</li>
 </ol>
 <p>A user cannot expect Sail, a package registry, GPU, WASM, mobile,
 self-hosting, or a production AI agent platform.</p>
@@ -237,6 +240,7 @@ preview even if the C builtins exist.</p>
 <h2 id="frozen-cli"><a class="header" href="#frozen-cli">Frozen CLI</a></h2>
 <pre><code>nate                 REPL
 nate run &lt;file&gt;      Run a file. No AST dump by default.
+nate build &lt;file&gt; [-o output]  Build a native executable.
 nate test [path]     Discover and run test_* functions
 nate bench [path]    Discover and run bench_* functions
 nate doc &lt;file&gt;      Text docs. HTML optional.
@@ -247,7 +251,7 @@ nate --help          Lists frozen commands
 <p>Ships in the tree. Not a compatibility promise. May change.</p>
 <ul>
 <li>Bytecode VM: <code>nate run --vm</code></li>
-<li>LLVM AOT: <code>nate build</code></li>
+<li>Legacy LLVM backend source (the supported <code>nate build</code> backend is C)</li>
 <li>LSP: <code>nate lsp</code></li>
 <li>Packages: <code>nate init</code>, <code>get</code>, <code>lock</code>, <code>install</code></li>
 <li><code>async</code> / <code>await</code></li>
@@ -277,8 +281,8 @@ nate --help          Lists frozen commands
 <li>The tree-walking interpreter implements the frozen spec.</li>
 <li>VM may be preview. Every frozen example it claims to run must match
 interpreter output.</li>
-<li>AOT may be preview. Document missing builtins. Do not imply C-level
-completeness.</li>
+<li>Native C builds must pass the same frozen conformance tests. See
+<a href="native-compilation.html">native-compilation.md</a> for the build and runtime contract.</li>
 <li><code>scripts/vm_parity_audit.py</code> is a release gate for the frozen set.</li>
 </ol>
 <p>If a frozen feature works in the interpreter and fails in the VM, either

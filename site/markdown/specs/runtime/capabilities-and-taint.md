@@ -2,7 +2,7 @@
 
 # Capabilities, taint, and scoped execution
 
-Status: frozen for the tree-walking interpreter. VM and AOT are preview.
+Status: frozen for the interpreter and native C backend. VM and legacy LLVM are preview.
 
 ## Capabilities
 

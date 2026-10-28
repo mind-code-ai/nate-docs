@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-rc.1",
-  "runtime": "tree-walking interpreter",
+  "runtime": "native C backend and tree-walking interpreter",
   "milestone": "v1.0.0",
   "frozen_keywords": [
     "func",

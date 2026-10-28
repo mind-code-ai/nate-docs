@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,16 +186,21 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="runtime-compatibility"><a class="header" href="#runtime-compatibility">Runtime Compatibility</a></h1>
-<p>Nate 1.0 has three execution paths. Only one is the language.</p>
-<pre><code>┌──────────────────────────┬──────────┬─────────────────────────┐
-│ Runtime                  │ 1.0 role │ Command                 │
-├──────────────────────────┼──────────┼─────────────────────────┤
-│ Tree-walking interpreter │ Source of│ nate run file.nate      │
-│                          │ truth    │                         │
-│ Bytecode VM              │ Preview  │ nate run file.nate --vm │
-│ LLVM AOT                 │ Preview  │ nate build file.nate    │
-└──────────────────────────┴──────────┴─────────────────────────┘
-</code></pre>
+<p>Nate supports native C compilation and interpreted development. Both implement
+the frozen language.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Runtime</th><th>Role</th><th>Command</th></tr>
+</thead>
+<tbody>
+<tr><td>Native C backend</td><td>Supported native executables</td><td><code>nate build file.nate</code></td></tr>
+<tr><td>Tree-walking interpreter</td><td>Reference implementation</td><td><code>nate run file.nate</code></td></tr>
+<tr><td>Bytecode VM</td><td>Preview</td><td><code>nate run file.nate --vm</code></td></tr>
+<tr><td>Legacy LLVM backend</td><td>Experimental source</td><td>Development only</td></tr>
+</tbody>
+</table>
+</div>
 <p>If these disagree, the interpreter is correct. The other runtime is a
 bug or an advertised limitation.</p>
 <h2 id="interpreter"><a class="header" href="#interpreter">Interpreter</a></h2>
@@ -217,15 +222,18 @@ in a VM known-issues section. Do not fail silently.</li>
 </ol>
 <p>Known-issues belong in this file as they are discovered. Do not hide
 them in issue comments.</p>
-<h2 id="llvm-aot"><a class="header" href="#llvm-aot">LLVM AOT</a></h2>
-<p><code>nate build</code> emits a native binary. It requires a Nate build with LLVM.</p>
-<p>Rules for 1.0:</p>
-<ol>
-<li>AOT is preview. Install docs must not require LLVM to run Nate.</li>
-<li>Document missing builtins instead of implying C-level completeness.</li>
-<li>GitHub issue #68 remains open until AOT has its own freeze spec.</li>
-<li><code>make</code> must still produce a working interpreter without LLVM.</li>
-</ol>
+<h2 id="native-c-backend"><a class="header" href="#native-c-backend">Native C backend</a></h2>
+<p><code>nate build</code> compiles ahead of time through C and links the checked Nate runtime.
+It needs a system C compiler at build time and no LLVM installation. Executables
+bundle imports and run without Nate or source files. All frozen conformance test
+functions run natively through <code>scripts/native_suite.py</code>. Build and deployment
+semantics are specified in <a href="native-compilation.html">native-compilation.md</a>.</p>
+<p>Missing, circular, or invalid imports fail at build time. This intentionally
+moves those failures earlier than <code>nate run</code>. Negative program checks distinguish
+build errors from errors raised by an executable. Timing and thread ordering
+are not compatibility guarantees.</p>
+<p>The old LLVM code generator remains experimental source in <code>src/compiler/</code>.
+It is not the backend used by <code>nate build</code>.</p>
 <h2 id="parity-definition"><a class="header" href="#parity-definition">Parity definition</a></h2>
 <p>Two runs match when:</p>
 <ul>
@@ -237,7 +245,7 @@ analysis, or runtime.</li>
 <p>Timing, thread interleaving, and map iteration order are not required
 to match unless a test pins them.</p>
 <h2 id="analysis-vs-execution"><a class="header" href="#analysis-vs-execution">Analysis vs execution</a></h2>
-<p>Static analysis in <code>src/analyzer*.c</code> runs before the interpreter.
+<p>Static analysis in <code>src/analyzer*.c</code> runs before interpretation or native compilation.
 Data-race errors and ownership errors that reject a program are part
 of the language if they are frozen.</p>
 <p>The VM path currently skips some of that pipeline. Until it does not,
@@ -256,7 +264,7 @@ language spec, not discovered by users.</li>
 and does not implement guard or scoped capability callbacks. Direct interface
 assertions, module export isolation, and interpreter memory ownership are not
 VM compatibility promises. Its parity audit is informational and may fail.
-LLVM AOT requires an LLVM-enabled build and has incomplete builtin coverage.
+Legacy LLVM AOT requires LLVM development files and has incomplete builtin coverage.
 Neither backend is promoted by a candidate or stable interpreter tag.</p>
 
                     </main>

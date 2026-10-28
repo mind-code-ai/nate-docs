@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Interpreter contract - Nate Docs</title>
+        <title>Language and runtime contract - Nate Docs</title>
 
 
         <!-- Custom HTML head -->
@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -214,6 +214,8 @@ A spec with no conformance test is not frozen.</p>
   1.0-scope.md              What is in, preview, and out
   versioning.md             1.0.0 and compatibility promises
   compatibility.md          Interpreter vs VM vs LLVM
+  native-compilation.md     Native builds, toolchain, and deployment
+  nate-compiler.md          Owned typed compiler and machine code roadmap
   conformance.md            How tests prove the spec
   cli.md                    Frozen CLI
   language/                 Language semantics
@@ -254,8 +256,8 @@ and <code>close_channel</code>, not <code>channel_create</code>.</li>
 <li><code>examples/*.nate</code> for intended usage</li>
 <li><code>stdlib/*.nate</code> for module APIs</li>
 </ul>
-<p>The tree-walking interpreter is the 1.0 runtime. The bytecode VM and
-LLVM backend are preview until <code>compatibility.md</code> says otherwise.</p>
+<p>Native C executables and the tree-walking interpreter implement the 1.0 language.
+The bytecode VM and legacy LLVM backend remain preview.</p>
 <h2 id="related-docs"><a class="header" href="#related-docs">Related docs</a></h2>
 <ul>
 <li><a href="1.0-scope.html">1.0 scope</a></li>

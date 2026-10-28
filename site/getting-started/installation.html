@@ -40,10 +40,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-6b9f9398.js";
+            window.path_to_searchindex_js = "../searchindex-742950a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-4ad7ce49.js"></script>
+        <script src="../toc-64fcdbdf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,7 +186,7 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>Nate’s interpreter builds on macOS and Linux without LLVM. The release candidate
+<p>Nate’s compiler and interpreter build on macOS and Linux without LLVM. The release candidate
 reports <code>nate 1.0.0-rc.1</code>.</p>
 <p>On macOS, install Xcode command-line tools with <code>xcode-select --install</code>.
 On Debian/Ubuntu, install <code>build-essential</code>, <code>git</code>, and <code>libsqlite3-dev</code>:</p>
@@ -197,9 +197,12 @@ cd nate-lang
 make -C src
 ./src/nate --version
 ./src/nate run examples/hello.nate
+./src/nate build examples/native.nate -o native-demo
+./native-demo
 </code></pre>
 <p>Source builds use the library in the checkout. Release archives contain <code>bin/nate</code>
-and <code>share/nate/stdlib</code>; preserve that layout and add the archive’s bin directory
+and <code>share/nate/stdlib</code>, plus <code>include/nate</code> and <code>lib/nate</code> for native compilation;
+preserve that layout and add the archive’s bin directory
 to PATH. The binary resolves its own location, so programs can run from another
 directory. <code>NATE_STDLIB</code> can point to an explicit library directory, including for
 C embedding. Project-local libraries and modules take precedence.</p>
@@ -209,7 +212,11 @@ python3 scripts/conformance.py
 python3 scripts/http_contract.py
 python3 scripts/install_contract.py
 </code></pre>
-<p>LLVM AOT and the bytecode VM are optional preview backends. Their availability
+<p><code>nate build</code> compiles through C with the system compiler (<code>cc</code>, or the executable
+named by <code>NATE_CC</code>). Imported modules and the Nate runtime are bundled, so the
+resulting executable runs without Nate, source files, or the stdlib directory.
+Normal host system libraries still apply.</p>
+<p>The legacy LLVM source and bytecode VM are preview backends. Their availability
 does not imply compatibility with every frozen interpreter feature.</p>
 <p>Next: <a href="./hello-world.html">Hello world</a>.</p>
 
